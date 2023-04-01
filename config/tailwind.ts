@@ -11,6 +11,9 @@ export default <Partial<Config>> {
           3: '#f0d347',
           4: '#e42138'
         },
+      },
+      fontFamily: {
+        sans: ['Chivo', 'sans-serif']
       }
     },
     plugins: []
