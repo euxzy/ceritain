@@ -24,7 +24,7 @@
 </script>
 
 <template>
-  <div>
+  <section>
     <form action="" class="w-[1024px] mx-auto">
       <div class="relative w-full mb-4">
         <div class="absolute w-full min-h-[calc(100%_-_2.8px)] top-0 left-0 rounded-xl bg-black"></div>
@@ -73,10 +73,10 @@
           <div class="absolute w-full h-[calc(100%_+_4px)] top-0 left-0 rounded-xl bg-black"></div>
           <button
             type="button"
-            class="relative w-full border-2 px-6 py-[10px] bg-accent-1 text-white border-secondary border-b-0 rounded-lg hover:bg-white hover:text-accent-1 transition-all duration-300"
+            class="relative w-full border-2 px-6 py-[10px] bg-accent-1 font-semibold text-white border-secondary border-b-0 rounded-lg hover:bg-white hover:text-accent-1 transition-all duration-300"
           >Bagikan Ceritamu!</button>
         </div>
       </div>
     </form>
-  </div>
+  </section>
 </template>

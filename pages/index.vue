@@ -9,5 +9,9 @@
     </div>
 
     <PostForm />
+
+    <div class="mt-12">
+      <BtnNav />
+    </div>
   </section>
 </template>
