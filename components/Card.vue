@@ -10,7 +10,7 @@
 
       <div class="w-full h-[1px] bg-slate-700"></div>
 
-      <p class="w-full text-end font-semibold pt-3 pb-4">{{ post?.user.name }}</p>
+      <p class="w-full text-end font-semibold pt-3 pb-4">{{ post?.user?.name }}</p>
     </div>
   </div>
 </template>

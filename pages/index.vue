@@ -7,7 +7,7 @@
   })
 
   const res: any = response.value
-  const posts: Array<object> = res?.data || [{}]
+  const posts: Array<object> = res?.data || []
 </script>
 
 <template>
@@ -28,7 +28,7 @@
 
     <div class="mt-12">
       <div class="w-[1024px] mx-auto">
-        <div class="flex justify-between flex-wrap gap-y-6">
+        <div class="flex justify-center flex-wrap gap-6" v-if="posts.length > 0">
           <Card 
             v-for="(post, idx) in posts"
             :key="idx"
