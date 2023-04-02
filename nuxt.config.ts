@@ -10,5 +10,8 @@ export default defineNuxtConfig({
     cssPath: '~/assets/css/tailwind.css',
     configPath: '~/config/tailwind.ts',
     viewer: false
+  },
+  appConfig: {
+    baseApi: process.env.APP_API
   }
 })

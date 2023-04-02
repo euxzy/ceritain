@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+  const { baseApi } = useAppConfig()
+
   const storyLabel: Ref = ref()
   const usernameLabel: Ref = ref()
   const tagsLabel: Ref = ref()
@@ -21,20 +23,35 @@
     else classLists.forEach((item) => tagsLabel?.value?.classList.remove(item))
   })
 
+  const formPost: Ref = ref()
+  const onFormSubmit = async () => {    
+    const formData = new FormData(formPost.value)
+    formData.append('user_id', '1')
+
+    await useFetch('api/post/add', {
+      baseURL: baseApi,
+      method: 'POST',
+      body: formData
+    })
+
+    setTimeout(() => {
+      location.reload()
+    }, 100)
+  }
 </script>
 
 <template>
   <section>
-    <form action="" class="w-[1024px] mx-auto">
+    <form ref="formPost" class="w-[1024px] mx-auto">
       <div class="relative w-full mb-4">
         <div class="absolute w-full min-h-[calc(100%_-_2.8px)] top-0 left-0 rounded-xl bg-black"></div>
         <textarea 
-        name="body"
-        id="body"
-        placeholder="Tulis ceritamu"
-        rows="1"
-        v-model="story"
-        class="peer relative w-full border-2 px-6 py-4 border-secondary border-b-0 rounded-lg outline-none placeholder:text-transparent"></textarea>
+          name="body"
+          id="body"
+          placeholder="Tulis ceritamu"
+          rows="1"
+          v-model="story"
+          class="peer relative w-full border-2 px-6 py-4 border-secondary border-b-0 rounded-lg outline-none placeholder:text-transparent"></textarea>
         <label 
           ref="storyLabel"
           for="body" 
@@ -74,6 +91,7 @@
           <button
             type="button"
             class="relative w-full border-2 px-6 py-[10px] bg-accent-1 font-semibold text-white border-secondary border-b-0 rounded-lg hover:bg-white hover:text-accent-1 transition-all duration-300"
+            v-on:click="onFormSubmit"
           >Bagikan Ceritamu!</button>
         </div>
       </div>

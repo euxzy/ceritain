@@ -1,3 +1,15 @@
+<script lang="ts" setup>
+  const { baseApi } = useAppConfig()
+
+  const { data: response } = await useFetch('api/post', {
+    method: 'GET',
+    baseURL: baseApi
+  })
+
+  const res: any = response.value
+  const posts: Array<object> = res?.data || []
+</script>
+
 <template>
   <section class="container">
     <div class="w-max mx-auto pt-16 pb-8 font-medium text-lg">
@@ -16,11 +28,12 @@
 
     <div class="mt-12">
       <div class="w-[1024px] mx-auto">
-        <div class="flex justify-between flex-wrap gap-y-6">
-          <Card />
-          <Card />
-          <Card />
-          <Card />
+        <div class="flex justify-center flex-wrap gap-6" v-if="posts.length > 0">
+          <Card 
+            v-for="(post, idx) in posts"
+            :key="idx"
+            :post="post"
+          />
         </div>
       </div>
     </div>
