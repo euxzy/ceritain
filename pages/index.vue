@@ -13,5 +13,16 @@
     <div class="mt-12">
       <BtnNav />
     </div>
+
+    <div class="mt-12">
+      <div class="w-[1024px] mx-auto">
+        <div class="flex justify-between flex-wrap gap-y-6">
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+        </div>
+      </div>
+    </div>
   </section>
 </template>
