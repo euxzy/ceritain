@@ -3,21 +3,36 @@ import type { Config } from 'tailwindcss'
 export default <Partial<Config>> {
   theme: {
     container: {
-      center: true
+      center: true,
+      screens: {
+        xl: '992px'
+      }
     },
     extend: {
       colors: {
-        primary: '#f5f5f5',
-        secondary: '#6f6f70',
+        primary: '#f2f7f5',
+        secondary: '#f5f5f5',
         accent: {
-          1: '#6abd7d',
-          2: '#5b96f4',
-          3: '#f0d347',
-          4: '#e42138'
+          1: '#8bd3dd',
+          2: '#8dbbff',
+          3: '#d3b0ff',
+          4: '#d3b0ff',
+          5: '#fa636e',
+          6: '#ffeaa0',
+          7: '#ffd182',
+          8: '#faae2b',
+          9: '#87e1a0',
         },
       },
+      borderRadius: {
+        lgm: '10px'
+      },
+      dropShadow: {
+        br: '.23rem .23rem 0 rgb(0, 0, 0)',
+        rd: '0 .12rem 0 rgb(0, 0, 0)'
+      },
       fontFamily: {
-        sans: ['Chivo', 'sans-serif']
+        sans: ['Comfortaa', 'cursive']
       }
     },
     plugins: []

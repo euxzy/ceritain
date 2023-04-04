@@ -10,11 +10,10 @@
   const tags: Ref<string> = ref('')
 
   watch([story, username, tags], () => {
-    const classLists: Array<string> = ['!-translate-y-6', 'bg-white', 'border-2', '!border-secondary']
-    const storyClassLists: Array<string> = ['!-translate-y-7', 'bg-white', 'border-2', '!border-secondary']
+    const classLists: Array<string> = ['!-translate-y-6', '!border-black']
 
-    if (story.value != '') storyClassLists.forEach((item) => storyLabel?.value?.classList.add(item))
-    else storyClassLists.forEach((item) => storyLabel?.value?.classList.remove(item))
+    if (story.value != '') classLists.forEach((item) => storyLabel?.value?.classList.add(item))
+    else classLists.forEach((item) => storyLabel?.value?.classList.remove(item))
 
     if (username.value != '') classLists.forEach((item) => usernameLabel?.value?.classList.add(item))
     else classLists.forEach((item) => usernameLabel?.value?.classList.remove(item))
@@ -41,56 +40,52 @@
 </script>
 
 <template>
-  <section>
-    <form ref="formPost" class="w-[1024px] mx-auto">
-      <div class="relative w-full mb-4">
-        <div class="absolute w-full min-h-[calc(100%_-_2.8px)] top-0 left-0 rounded-xl bg-black"></div>
+  <section class="container">
+    <p class="mt-16 mx-auto w-max text-xl font-semibold">Submit Ceritamu!</p>
+    <form ref="formPost" class="mt-5 mb-10 flex justify-between gap-5">
+      <div class="relative flex-1">
         <textarea 
           name="body"
           id="body"
           placeholder="Tulis ceritamu"
-          rows="1"
           v-model="story"
-          class="peer relative w-full border-2 px-6 py-4 border-secondary border-b-0 rounded-lg outline-none placeholder:text-transparent"></textarea>
+          class="peer relative w-full border px-6 py-4 bg-accent-6 border-black rounded-lgm outline-none placeholder:text-transparent drop-shadow-br h-full"></textarea>
         <label 
           ref="storyLabel"
           for="body" 
-          class="card-border mt-4 peer-hover:-translate-y-7 peer-focus:-translate-y-7">Tulis ceritamu</label>
+          class="card-border mx-3 mt-3 bg-accent-6 peer-hover:-translate-y-6 peer-focus:-translate-y-6">Tulis ceritamu</label>
       </div>
-      <div class="w-full flex justify-between gap-4">
-        <div class="relative w-72">
-          <div class="absolute w-full h-[calc(100%_+_4px)] top-0 left-0 rounded-xl bg-black"></div>
+      <div class="w-96 flex flex-col gap-7">
+        <div class="relative">
           <input 
             type="text" 
             name="tags" 
             id="tags"
             v-model="tags"
-            class="peer relative w-full border-2 px-6 py-[10px] border-secondary border-b-0 rounded-lg outline-none placeholder:text-transparent"
+            class="peer relative w-full bg-secondary border px-6 py-[10px] border-black rounded-lgm outline-none placeholder:text-transparent drop-shadow-br"
           />
           <label 
             ref="tagsLabel"
             for="tags"
-            class="card-border mt-3 peer-hover:-translate-y-6 peer-focus:-translate-y-6 text-sm">Masukan tagar</label>
+            class="card-border mt-3 bg-secondary peer-hover:-translate-y-6 peer-focus:-translate-y-6 text-sm mx-auto inset-x-0 w-max">Masukan tagar</label>
         </div>
-        <div class="relative flex-1">
-          <div class="absolute w-full h-[calc(100%_+_4px)] top-0 left-0 rounded-xl bg-black"></div>
+        <div class="relative">
           <input 
             type="text" 
             name="username" 
             id="username"
             v-model="username"
-            class="peer relative w-full border-2 px-6 py-[10px] border-secondary border-b-0 rounded-lg outline-none placeholder:text-transparent"
+            class="peer relative w-full bg-secondary border px-6 py-[10px] border-black rounded-lgm outline-none placeholder:text-transparent drop-shadow-br"
           />
           <label 
             ref="usernameLabel"
             for="username"
-            class="card-border mt-3 peer-hover:-translate-y-6 peer-focus:-translate-y-6 text-sm">Isi nicknamemu</label>
+            class="card-border inset-x-0 mt-3 mx-auto w-max bg-secondary peer-hover:-translate-y-6 peer-focus:-translate-y-6 text-sm">Isi nicknamemu</label>
         </div>
-        <div class="relative w-72">
-          <div class="absolute w-full h-[calc(100%_+_4px)] top-0 left-0 rounded-xl bg-black"></div>
+        <div class="relative">
           <button
             type="button"
-            class="relative w-full border-2 px-6 py-[10px] bg-accent-1 font-semibold text-white border-secondary border-b-0 rounded-lg hover:bg-white hover:text-accent-1 transition-all duration-300"
+            class="relative w-full border px-6 py-[10px] bg-accent-2 font-semibold border-black rounded-lgm hover:bg-secondary transition-all duration-300 drop-shadow-br"
             v-on:click="onFormSubmit"
           >Bagikan Ceritamu!</button>
         </div>

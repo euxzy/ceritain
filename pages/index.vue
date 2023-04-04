@@ -11,33 +11,20 @@
 </script>
 
 <template>
-  <section class="container">
-    <div class="w-max mx-auto pt-16 pb-8 font-medium text-lg">
-      <h1 class="relative font-extrabold text-5xl px-3 w-max mx-auto mb-0.5">
-        Cerita 
-        <span class="absolute w-5 h-5 pl-0.5 bg-black text-white rounded-full text-xs font-medium flex items-center top-0 -right-1">.in</span>
-      </h1>
-      <p>Ceritakan semua yang pengen kamu ceritakan!</p>
-    </div>
+  <section>
+    <Hero />
 
     <PostForm />
 
-    <div class="mt-12">
-      <BtnNav />
-    </div>
-
-    <div class="mt-12">
-      <div class="w-[1024px] mx-auto">
-        <div class="flex justify-center flex-wrap gap-6" v-if="posts.length > 0">
-          <Card 
-            v-for="(post, idx) in posts"
-            :key="idx"
-            :post="post"
-          />
-        </div>
+    <section class="container">
+      <p class="text-center text-xl my-5 font-bold">Cerita dari Orang-orang</p>
+      <div>
+        <PostCard 
+          v-for="(post, idx) in posts"
+          :key="idx"
+          :post="post"
+        />
       </div>
-    </div>
-
-    <Footer />
+    </section>
   </section>
 </template>

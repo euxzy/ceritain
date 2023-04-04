@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,5 +7,5 @@
 
 
 .card-border {
-  @apply absolute top-0 left-0 mx-4 rounded-md px-2 text-secondary border-2 border-transparent transition-all duration-300 peer-hover:bg-white peer-hover:border-2 peer-hover:border-secondary peer-focus:bg-white peer-focus:border-2 peer-focus:border-secondary;
+  @apply absolute top-0 left-0 rounded-md px-2 border border-transparent transition-all duration-300 peer-hover:border-black peer-focus:border-black;
 }
