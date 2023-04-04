@@ -28,7 +28,8 @@ export default <Partial<Config>> {
         lgm: '10px'
       },
       dropShadow: {
-        br: '.23rem .23rem 0 rgb(0, 0, 0)'
+        br: '.23rem .23rem 0 rgb(0, 0, 0)',
+        rd: '0 .12rem 0 rgb(0, 0, 0)'
       },
       fontFamily: {
         sans: ['Comfortaa', 'cursive']
