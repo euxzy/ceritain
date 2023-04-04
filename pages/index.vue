@@ -13,5 +13,7 @@
 <template>
   <section>
     <Hero />
+
+    <PostForm />
   </section>
 </template>

@@ -7,5 +7,5 @@
 
 
 .card-border {
-  @apply absolute top-0 left-0 mx-4 rounded-md px-2 text-secondary border-2 border-transparent transition-all duration-300 peer-hover:bg-white peer-hover:border-2 peer-hover:border-secondary peer-focus:bg-white peer-focus:border-2 peer-focus:border-secondary;
+  @apply absolute top-0 left-0 rounded-md px-2 border border-transparent transition-all duration-300 peer-hover:border-black peer-focus:border-black;
 }
