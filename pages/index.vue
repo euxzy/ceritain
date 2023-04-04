@@ -30,5 +30,7 @@
     </section>
 
     <Otakuline />
+
+    <Footer />
   </section>
 </template>
