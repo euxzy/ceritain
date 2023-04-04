@@ -11,13 +11,13 @@
       <p class="mb-1">{{ post?.body }}</p>
 
       <div class="flex gap-[10px] justify-end">
-        <div class="bg-accent-5 rounded-full w-max p-1 border border-black drop-shadow-rd">
+        <div class="bg-accent-5 rounded-full w-max p-1 border border-black drop-shadow-rd cursor-pointer hover:-translate-y-1 transition-all duration-300">
           <img src="~/assets/images/icons/favorite.svg" alt="">
         </div>
-        <div class="bg-accent-7 rounded-full w-max p-1 border border-black drop-shadow-rd">
+        <div class="bg-accent-7 rounded-full w-max p-1 border border-black drop-shadow-rd cursor-pointer hover:-translate-y-1 transition-all duration-300">
           <img src="~/assets/images/icons/topic.svg" alt="">
         </div>
-        <div class="bg-white rounded-full w-max p-1 border border-black drop-shadow-rd">
+        <div class="bg-white rounded-full w-max p-1 border border-black drop-shadow-rd cursor-pointer hover:-translate-y-1 transition-all duration-300">
           <img src="~/assets/images/icons/share.svg" alt="">
         </div>
       </div>
