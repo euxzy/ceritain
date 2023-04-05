@@ -4,7 +4,7 @@
       <div class="w-72 mx-auto mb-2">
         <img class="w-full" src="~/assets/images/cats.png" alt="Ceritain">
       </div>
-      <div class="w-max mx-auto text-center font-medium text-lg leading-tight">
+      <div class="max-w-max mx-auto text-center font-medium text-lg leading-tight">
         <p>Ceritain</p>
         <p>Ceritakan semua yang pengen kamu ceritakan!</p>
       </div>

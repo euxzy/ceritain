@@ -18,7 +18,7 @@
 
     <section class="container">
       <p class="text-center text-xl my-5 font-bold">Cerita dari Orang-orang</p>
-      <div>
+      <div class="w-11/12 mx-auto">
         <PostCard 
           v-for="(post, idx) in posts"
           :key="idx"
