@@ -55,7 +55,7 @@
           for="body" 
           class="card-border mx-3 mt-3 bg-accent-6 peer-hover:-translate-y-6 peer-focus:-translate-y-6">Tulis ceritamu</label>
       </div>
-      <div class="w-96 flex flex-col gap-7">
+      <div class="w-80 flex flex-col gap-7">
         <div class="relative">
           <input 
             type="text" 

@@ -25,6 +25,12 @@
           :post="post"
         />
       </div>
+
+      <button type="button" class="border bg-white my-16 font-medium block border-black rounded-lgm px-8 py-1 mx-auto drop-shadow-br transition-all duration-300 hover:-translate-y-1">Load more</button>
     </section>
+
+    <Otakuline />
+
+    <Footer />
   </section>
 </template>

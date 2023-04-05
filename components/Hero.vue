@@ -9,8 +9,8 @@
         <p>Ceritakan semua yang pengen kamu ceritakan!</p>
       </div>
       <div class="flex justify-center gap-[14px] mt-14">
-        <NuxtLink to="/login" class="bg-accent-2 py-0.5 px-6 rounded-lgm border border-black drop-shadow-br">Login</NuxtLink>
-        <NuxtLink to="/register" class="bg-accent-9 py-0.5 px-[22px] rounded-lgm border border-black drop-shadow-br">Daftar</NuxtLink>
+        <NuxtLink to="/login" class="bg-accent-2 py-0.5 px-6 rounded-lgm border border-black drop-shadow-br transition-all duration-300 hover:bg-secondary">Login</NuxtLink>
+        <NuxtLink to="/register" class="bg-accent-9 py-0.5 px-[22px] rounded-lgm border border-black drop-shadow-br transition-all duration-300 hover:bg-secondary">Daftar</NuxtLink>
       </div>
     </div>
   </section>

@@ -5,7 +5,7 @@ export default <Partial<Config>> {
     container: {
       center: true,
       screens: {
-        xl: '992px'
+        xl: '768px'
       }
     },
     extend: {
