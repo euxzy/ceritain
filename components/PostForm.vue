@@ -41,8 +41,8 @@
 
 <template>
   <section class="container">
-    <p class="mt-16 mx-auto w-max text-xl font-semibold">Submit Ceritamu!</p>
-    <form ref="formPost" class="mt-5 mb-10 flex justify-between gap-5">
+    <p class="mt-16 mx-auto max-w-max text-xl font-semibold">Submit Ceritamu!</p>
+    <form ref="formPost" class="w-11/12 mx-auto mt-5 mb-10 flex flex-col justify-between gap-5 md:flex-row">
       <div class="relative flex-1">
         <textarea 
           name="body"
@@ -55,7 +55,7 @@
           for="body" 
           class="card-border mx-3 mt-3 bg-accent-6 peer-hover:-translate-y-6 peer-focus:-translate-y-6">Tulis ceritamu</label>
       </div>
-      <div class="w-80 flex flex-col gap-7">
+      <div class="lg:w-80 flex flex-col gap-7">
         <div class="relative">
           <input 
             type="text" 
