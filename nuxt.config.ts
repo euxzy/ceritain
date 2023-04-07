@@ -5,6 +5,9 @@ export default defineNuxtConfig({
       title: 'Ceritain | Otakuline.id'
     }
   },
+  routeRules: {
+    '/*': { ssr: false }
+  },
   modules: ['@nuxtjs/tailwindcss'],
   tailwindcss: {
     cssPath: '~/assets/css/tailwind.css',

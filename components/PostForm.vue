@@ -1,12 +1,14 @@
 <script lang="ts" setup>
   const { baseApi } = useAppConfig()
+  const { resProfile } = await useGetData()
+  const dataUser: any = resProfile.data.value || null
 
   const storyLabel: Ref = ref()
   const usernameLabel: Ref = ref()
   const tagsLabel: Ref = ref()
 
   const story: Ref<string> = ref('')
-  const username: Ref<string> = ref('')
+  const username: Ref<string> = ref(dataUser?.data.username || '')
   const tags: Ref<string> = ref('')
 
   watch([story, username, tags], () => {
@@ -22,14 +24,17 @@
     else classLists.forEach((item) => tagsLabel?.value?.classList.remove(item))
   })
 
+  const token: string = localStorage.getItem('token') || ''
   const formPost: Ref = ref()
   const onFormSubmit = async () => {    
     const formData = new FormData(formPost.value)
-    formData.append('user_id', '1')
 
     await useFetch('api/post/add', {
       baseURL: baseApi,
       method: 'POST',
+      headers: {
+        'Authorization': token,
+      },
       body: formData
     })
 
@@ -41,7 +46,7 @@
 
 <template>
   <section class="container">
-    <p class="mt-16 mx-auto max-w-max text-xl font-semibold">Submit Ceritamu!</p>
+    <p class="mt-8 mx-auto max-w-max text-xl font-semibold">Submit Ceritamu!</p>
     <form ref="formPost" class="w-11/12 mx-auto mt-5 mb-10 flex flex-col justify-between gap-5 md:flex-row">
       <div class="relative flex-1">
         <textarea 
@@ -80,6 +85,7 @@
           <label 
             ref="usernameLabel"
             for="username"
+            :class="dataUser?.data?.username ? '!-translate-y-6 !border-black' : ''"
             class="card-border inset-x-0 mt-3 mx-auto w-max bg-secondary peer-hover:-translate-y-6 peer-focus:-translate-y-6 text-sm">Isi nicknamemu</label>
         </div>
         <div class="relative">
