@@ -1,6 +1,8 @@
 <script lang="ts" setup>
-  const { baseApi } = useAppConfig()
-  const { resProfile } = await useGetData()
+  import StoreInterface from '~~/interfaces/store.interface'
+
+  const props = defineProps(['resProfile'])
+  const resProfile = props.resProfile
   const dataUser: any = resProfile.data.value || null
 
   const storyLabel: Ref = ref()
@@ -24,19 +26,16 @@
     else classLists.forEach((item) => tagsLabel?.value?.classList.remove(item))
   })
 
-  const token: string = localStorage.getItem('token') || ''
   const formPost: Ref = ref()
   const onFormSubmit = async () => {    
     const formData = new FormData(formPost.value)
 
-    await useFetch('api/post/add', {
-      baseURL: baseApi,
-      method: 'POST',
-      headers: {
-        'Authorization': token,
-      },
-      body: formData
-    })
+    const payload: StoreInterface = {
+      path: 'api/post/add',
+      formData
+    }
+
+    const resStrorePost = await useStoreData(payload).resStorePost()
 
     setTimeout(() => {
       location.reload()
@@ -81,6 +80,7 @@
             id="username"
             v-model="username"
             class="peer relative w-full bg-secondary border px-6 py-[10px] border-black rounded-lgm outline-none placeholder:text-transparent drop-shadow-br"
+            :disabled="dataUser?.status"
           />
           <label 
             ref="usernameLabel"
