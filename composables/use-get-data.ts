@@ -1,5 +1,5 @@
 export const useGetData = () => {
-  const { baseApi } = useAppConfig()
+  const { baseApi, otakuLineApi } = useAppConfig()
   const token = localStorage.getItem('token') || ''
 
   const resProfile = async () => {
@@ -14,5 +14,12 @@ export const useGetData = () => {
 
   const resPosts = async () => (await useFetch('api/post', { baseURL: baseApi }))
 
-  return { resProfile, resPosts }
+  const resOtakuLine = async () => (await useFetch('wp-json/wp/v2/posts', {
+    baseURL: otakuLineApi,
+    params: {
+      per_page: 1
+    }
+  }))
+
+  return { resProfile, resPosts, resOtakuLine }
 }

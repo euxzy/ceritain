@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     viewer: false
   },
   appConfig: {
-    baseApi: process.env.APP_API
+    baseApi: process.env.APP_API,
+    otakuLineApi: process.env.OTAKULINE_API
   }
 })
