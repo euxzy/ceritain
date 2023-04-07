@@ -31,5 +31,13 @@ export const useStoreData = (data: StoreInterface) => {
     })
   }
 
-  return { resStorePost, resLogin, resRegister }
+  const resVerifyEmail = async () => {
+    return await useFetch(data.path, {
+      baseURL: baseApi,
+      method: 'POST',
+      params: data?.params
+    })
+  }
+
+  return { resStorePost, resLogin, resRegister, resVerifyEmail }
 }
