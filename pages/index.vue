@@ -1,10 +1,8 @@
 <script lang="ts" setup>
-  const { baseApi } = useAppConfig()
+  const resPosts = await useGetData().resPosts()
+  const resProfile = await useGetData().resProfile()
 
-  const { data: response } = await useFetch('api/post', {
-    method: 'GET',
-    baseURL: baseApi
-  })
+  const { data: response } = resPosts
 
   const res: any = response.value
   const posts: Array<object> = res?.data || []
@@ -12,9 +10,9 @@
 
 <template>
   <section>
-    <Hero />
+    <Hero :resProfile="resProfile" />
 
-    <PostForm />
+    <PostForm :resProfile="resProfile" />
 
     <section class="container">
       <p class="text-center text-xl my-5 font-bold">Cerita dari Orang-orang</p>

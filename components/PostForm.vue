@@ -1,12 +1,16 @@
 <script lang="ts" setup>
-  const { baseApi } = useAppConfig()
+  import StoreInterface from '~~/interfaces/store.interface'
+
+  const props = defineProps(['resProfile'])
+  const resProfile = props.resProfile
+  const dataUser: any = resProfile.data.value || null
 
   const storyLabel: Ref = ref()
   const usernameLabel: Ref = ref()
   const tagsLabel: Ref = ref()
 
   const story: Ref<string> = ref('')
-  const username: Ref<string> = ref('')
+  const username: Ref<string> = ref(dataUser?.data.username || '')
   const tags: Ref<string> = ref('')
 
   watch([story, username, tags], () => {
@@ -25,13 +29,13 @@
   const formPost: Ref = ref()
   const onFormSubmit = async () => {    
     const formData = new FormData(formPost.value)
-    formData.append('user_id', '1')
 
-    await useFetch('api/post/add', {
-      baseURL: baseApi,
-      method: 'POST',
-      body: formData
-    })
+    const payload: StoreInterface = {
+      path: 'api/post/add',
+      formData
+    }
+
+    const resStrorePost = await useStoreData(payload).resStorePost()
 
     setTimeout(() => {
       location.reload()
@@ -41,7 +45,7 @@
 
 <template>
   <section class="container">
-    <p class="mt-16 mx-auto max-w-max text-xl font-semibold">Submit Ceritamu!</p>
+    <p class="mt-8 mx-auto max-w-max text-xl font-semibold">Submit Ceritamu!</p>
     <form ref="formPost" class="w-11/12 mx-auto mt-5 mb-10 flex flex-col justify-between gap-5 md:flex-row">
       <div class="relative flex-1">
         <textarea 
@@ -76,10 +80,12 @@
             id="username"
             v-model="username"
             class="peer relative w-full bg-secondary border px-6 py-[10px] border-black rounded-lgm outline-none placeholder:text-transparent drop-shadow-br"
+            :disabled="dataUser?.status"
           />
           <label 
             ref="usernameLabel"
             for="username"
+            :class="dataUser?.data?.username ? '!-translate-y-6 !border-black' : ''"
             class="card-border inset-x-0 mt-3 mx-auto w-max bg-secondary peer-hover:-translate-y-6 peer-focus:-translate-y-6 text-sm">Isi nicknamemu</label>
         </div>
         <div class="relative">

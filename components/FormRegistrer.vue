@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  const { baseApi } = useAppConfig()
+  import StoreInterface from '~~/interfaces/store.interface'
 
   const nameLabel: Ref = ref()
   const usernameLabel: Ref = ref()
@@ -26,15 +26,18 @@
     })
   })
 
+  const isSubmited: Ref<boolean> = ref(false)
   const formRegist: Ref = ref()
   const onRegist = async () => {
+    isSubmited.value = true
     const formData: FormData = new FormData(formRegist.value)
 
-    await useFetch('api/auth/register', {
-      baseURL: baseApi,
-      method: 'POST',
-      body: formData
-    })
+    const payload: StoreInterface = {
+      path: 'api/auth/register',
+      formData
+    }
+
+    const resRegister = await useStoreData(payload).resRegister()
   }
 </script>
 
@@ -99,6 +102,7 @@
             type="button"
             class="relative w-full border px-6 py-[10px] bg-accent-4 font-semibold border-black rounded-lgm hover:bg-secondary transition-all duration-300 drop-shadow-br"
             v-on:click="onRegist"
+            :disabled="isSubmited"
           >Daftar Sekarang!</button>
         </div>
       </div>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  const { baseApi } = useAppConfig()
+  import StoreInterface from '~~/interfaces/store.interface';
 
   const usernameLabel: Ref = ref()
   const passwordLabel: Ref = ref()
@@ -20,20 +20,25 @@
     })
   })
 
+  const isSubmited: Ref<boolean> = ref(false)
   const formLogin: Ref = ref()
   const onLogin = async () => {
+    isSubmited.value = true
     const formData: FormData = new FormData(formLogin.value)
 
-    const user = await useFetch('api/auth/login', {
-      baseURL: baseApi,
-      method: 'POST',
-      body: formData
-    })
+    const payload: StoreInterface = {
+      path: 'api/auth/login',
+      formData
+    }
 
-    const res: any = user.data.value
-    const token = res?.data?.token
+    const resLogin = await useStoreData(payload).resLogin()
+    const res: any = resLogin.data.value
+    const token: string = res?.data?.token || ''
 
-    if (token) localStorage.setItem('token', token)
+    if (token) {
+      localStorage.setItem('token', token)
+      // navigateTo('/')
+    }
   }
 </script>
 
@@ -72,6 +77,7 @@
             type="button"
             class="relative w-full border px-6 py-[10px] bg-accent-9 font-semibold border-black rounded-lgm hover:bg-secondary transition-all duration-300 drop-shadow-br"
             v-on:click="onLogin"
+            :disabled="isSubmited"
           >login!</button>
         </div>
       </div>
