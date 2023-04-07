@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-  const { resProfile } = await useGetData()
+  const props = defineProps(['resProfile'])
+  const resProfile = props.resProfile
   const dataUser: any = resProfile.data.value || null
 </script>
 

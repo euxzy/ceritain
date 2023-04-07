@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-  const { resPosts } = await useGetData()
+  const resPosts = await useGetData().resPosts()
+  const resProfile = await useGetData().resProfile()
 
   const { data: response } = resPosts
 
@@ -9,9 +10,9 @@
 
 <template>
   <section>
-    <Hero />
+    <Hero :resProfile="resProfile" />
 
-    <PostForm />
+    <PostForm :resProfile="resProfile" />
 
     <section class="container">
       <p class="text-center text-xl my-5 font-bold">Cerita dari Orang-orang</p>

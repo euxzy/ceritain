@@ -1,16 +1,18 @@
-export const useGetData = async () => {
+export const useGetData = () => {
   const { baseApi } = useAppConfig()
   const token = localStorage.getItem('token') || ''
 
-  const resProfile = await useFetch('api/me', {
-    baseURL: baseApi,
-    method: 'GET',
-    headers: {
-      'Authorization': token
-    }
-  })
+  const resProfile = async () => {
+    return await useFetch('api/me', {
+      baseURL: baseApi,
+      method: 'GET',
+      headers: {
+        'Authorization': token
+      }
+    })
+  }
 
-  const resPosts = await useFetch('api/post', { baseURL: baseApi })
+  const resPosts = async () => (await useFetch('api/post', { baseURL: baseApi }))
 
   return { resProfile, resPosts }
 }

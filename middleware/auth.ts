@@ -1,5 +1,5 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
-  const { resProfile } = await useGetData()
+  const resProfile = await useGetData().resProfile()
   const dataUser: any = resProfile.data.value || null
   const path = to.path
 
