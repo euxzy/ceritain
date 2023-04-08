@@ -94,7 +94,7 @@
 <template>
   <section class="container">
     <form ref="formLogin" class="mt-5">
-      <div class="w-96 flex flex-col gap-6 mx-auto">
+      <div class="w-11/12 md:w-96 flex flex-col gap-6 mx-auto">
         <div class="relative">
           <input 
             type="text" 
