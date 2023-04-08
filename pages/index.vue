@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+  import Swal from 'sweetalert2'
+
   const resPosts: Ref<any> = ref(await useGetData().resPosts())
   const resProfile = await useGetData().resProfile()
 
@@ -13,6 +15,14 @@
     res.value = resPosts.value.data
     posts.value = res.value?.data
     isLoaded.value = true
+  }
+
+  if (!res.value) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Internal Server Error! Mohon coba beberapa saat lagi!',
+      customClass: 'drop-shadow-br !rounded-lgm'
+    })
   }
 </script>
 

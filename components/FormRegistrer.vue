@@ -71,6 +71,14 @@
       })
     }
 
+    if (!err && !res) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Internal Server Error! Mohon coba beberapa saat lagi!',
+        customClass: 'drop-shadow-br !rounded-lgm'
+      })
+    }
+
     isSubmited.value = false
   }
 </script>

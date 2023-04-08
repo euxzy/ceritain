@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import Swal from 'sweetalert2'
+  import Swal, { SweetAlertOptions } from 'sweetalert2'
   import StoreInterface from '~~/interfaces/store.interface'
 
   const props = defineProps(['resProfile'])
@@ -48,16 +48,31 @@
         customClass: 'drop-shadow-br !rounded-lgm',
         showConfirmButton: false
       })
+      story.value = ''
+      tags.value = ''
       emit('refershNewData')
     }
 
     if (err) {
+      const data: SweetAlertOptions = {
+        title: 'Mohon login dulu untuk mulai bercerita!'
+      }
+
+      if (err?.statusCode == 400 && err?.message.includes('body')) data.title = 'Kamu belum menulis cerita apapun!'
       Swal.fire({
         icon: 'info',
-        title: 'Mohon login dulu untuk mulai bercerita!',
+        title: data.title,
         customClass: 'drop-shadow-br !rounded-lgm'
       }).then((info) => {
         if (info.isConfirmed || info.dismiss) navigateTo('/login')
+      })
+    }
+
+    if (!err && !res) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Internal Server Error! Mohon coba beberapa saat lagi!',
+        customClass: 'drop-shadow-br !rounded-lgm'
       })
     }
   }
