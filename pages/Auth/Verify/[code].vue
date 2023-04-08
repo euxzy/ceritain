@@ -1,20 +1,40 @@
 <script lang="ts" setup>
-import StoreInterface from '~~/interfaces/store.interface';
+  import Swal from 'sweetalert2'
+  import StoreInterface from '~~/interfaces/store.interface'
 
   const route = useRoute()
   const codeParams: string = route.params?.code.toString()
 
-  onMounted(async () => {
-    const payload: StoreInterface = {
-      path: 'api/auth/verify',
-      params: {
-        code: codeParams
-      }
+  const payload: StoreInterface = {
+    path: 'api/auth/verify',
+    params: {
+      code: codeParams
     }
+  }
 
-    const resVerifyEmail = await useStoreData(payload).resVerifyEmail()
-    navigateTo('/login')
-  })
+  const resVerifyEmail = await useStoreData(payload).resVerifyEmail()
+  const res: any = resVerifyEmail.data.value
+  const err: any = resVerifyEmail.error.value?.data || null
+  
+  if (res?.status) {
+    Swal.fire({
+      icon: 'success',
+      title: 'Verifikasi emailmu berhasil! segera login untuk mulai bercerita.',
+      customClass: 'drop-shadow-br !rounded-lgm'
+    }).then((info) => {
+      if (info.isConfirmed || info.dismiss) navigateTo('/login')
+    })
+  }
+
+  if (err) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Oopss! verifikasi emailmu gagal!',
+      customClass: 'drop-shadow-br !rounded-lgm'
+    }).then((info) => {
+      if (info.isConfirmed || info.dismiss) navigateTo('/')
+    })
+  }
 </script>
 
 <template>

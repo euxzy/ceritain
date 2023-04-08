@@ -9,3 +9,8 @@
 .card-border {
   @apply absolute top-0 left-0 rounded-md px-2 border border-transparent transition-all duration-300 peer-hover:border-black peer-focus:border-black;
 }
+
+/* custoom sweetalert */
+.swal2-confirm {
+  @apply drop-shadow-br !rounded-lgm !bg-accent-9 outline-none !px-10 font-bold !transition-all !duration-300 hover:-translate-y-1 hover:!bg-accent-9 focus:!shadow-none;
+}

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-  import StoreInterface from '~~/interfaces/store.interface';
+  import Swal, { SweetAlertOptions } from 'sweetalert2'
+  import StoreInterface from '~~/interfaces/store.interface'
 
   const usernameLabel: Ref = ref()
   const passwordLabel: Ref = ref()
@@ -34,11 +35,51 @@
     const resLogin = await useStoreData(payload).resLogin()
     const res: any = resLogin.data.value
     const token: string = res?.data?.token || ''
+    const err: any = resLogin.error.value?.data || null
+
+    if (err) {
+      const data: SweetAlertOptions = {
+        icon: 'error',
+        title: 'Oopss! jangan lupa isi username sama password!',
+        confirmButtonText: 'OK'
+      }
+      if (err?.statusCode == 404) {
+        data.title = 'Oopss! usernamemu belum terdaftar!'
+        data.icon = 'warning'
+        data.confirmButtonText = 'Daftar sekarang!'
+      } else if (err?.statusCode == 401 && err?.message.includes('wrong!')) {
+        data.title = 'Oopss! username atau passwordmu salah!'
+      } else if (err?.statusCode == 401 && err?.message.includes('verify')) {
+        data.title = 'Oopss! mohon verifikasi email terlebih dahulu!'
+        data.icon = 'warning'
+      }
+
+      Swal.fire({
+        position: 'center',
+        icon: data.icon,
+        title: data.title,
+        confirmButtonText: data.confirmButtonText,
+        customClass: 'drop-shadow-br !rounded-lgm'
+      }).then((info) => {
+        if (info.isConfirmed) {
+          if (err?.statusCode == 404) navigateTo('/register')
+        }
+      })
+    }
 
     if (token) {
       localStorage.setItem('token', token)
-      // navigateTo('/')
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Login berhasil!',
+        customClass: 'drop-shadow-br !rounded-lgm',
+        showConfirmButton: false
+      })
+      navigateTo('/')
     }
+
+    isSubmited.value = false
   }
 </script>
 

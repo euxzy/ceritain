@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+  import Swal, { SweetAlertOptions } from 'sweetalert2'
   import StoreInterface from '~~/interfaces/store.interface'
 
   const nameLabel: Ref = ref()
@@ -38,6 +39,39 @@
     }
 
     const resRegister = await useStoreData(payload).resRegister()
+    const res: any = resRegister.data.value
+    const err: any = resRegister.error.value?.data || null
+
+    if (err) {
+      const data: SweetAlertOptions = {
+        title: 'Oopss! mohon isi semua data dengan benar!',
+        icon: 'error'
+      }
+
+      if (err?.statusCode == 400 && err?.message.includes('"name" length')) data.title = 'Oopss! nama minimal harus terdiri dari 3 karakter!'
+      else if (err?.statusCode == 400 && err?.message.includes('"username" length')) data.title = 'Oopss! usernamemu terlalu pendek!'
+      else if (err?.statusCode == 400 && err?.message.includes('email')) data.title = 'Oopss! emailmu tidak valid!'
+      else if (err?.statusCode == 400 && err?.message.includes('password')) data.title = 'Oopss! passwordmu terlalu pendek!'
+      else if (err?.statusCode == 409) data.title = 'Oopss! username atau email sudah terdaftar!'
+
+      Swal.fire({
+        title: data.title,
+        icon: data.icon,
+        customClass: 'drop-shadow-br !rounded-lgm'
+      })
+    }
+
+    if (res?.status) {
+      Swal.fire({
+        title: 'Registrasi berhasil! mohon segera verifikasi emailmu!',
+        icon: 'success',
+        customClass: 'drop-shadow-br !rounded-lgm'
+      }).then((info) => {
+        if (info.isConfirmed || info.dismiss) navigateTo('/login')
+      })
+    }
+
+    isSubmited.value = false
   }
 </script>
 

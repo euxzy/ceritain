@@ -1,7 +1,9 @@
 <script lang="ts" setup>
+  import Swal from 'sweetalert2'
   import StoreInterface from '~~/interfaces/store.interface'
 
   const props = defineProps(['resProfile'])
+  const emit = defineEmits(['refershNewData'])
   const resProfile = props.resProfile
   const dataUser: any = resProfile.data.value || null
 
@@ -36,10 +38,28 @@
     }
 
     const resStrorePost = await useStoreData(payload).resStorePost()
+    const res: any = resStrorePost.data.value
+    const err: any = resStrorePost.error.value?.data || null
 
-    setTimeout(() => {
-      location.reload()
-    }, 100)
+    if (res?.status) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Ceritamu berhasil diposting!',
+        customClass: 'drop-shadow-br !rounded-lgm',
+        showConfirmButton: false
+      })
+      emit('refershNewData')
+    }
+
+    if (err) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Mohon login dulu untuk mulai bercerita!',
+        customClass: 'drop-shadow-br !rounded-lgm'
+      }).then((info) => {
+        if (info.isConfirmed || info.dismiss) navigateTo('/login')
+      })
+    }
   }
 </script>
 
