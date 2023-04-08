@@ -1,22 +1,43 @@
 <script lang="ts" setup>
-  const resPosts = await useGetData().resPosts()
+  import Swal from 'sweetalert2'
+
+  const resPosts: Ref<any> = ref(await useGetData().resPosts())
   const resProfile = await useGetData().resProfile()
 
-  const { data: response } = resPosts
+  const { data: response } = resPosts.value
+  const res: Ref<any> = ref(response)
+  const posts: Ref<Array<object>> = ref(res.value?.data || [])
 
-  const res: any = response.value
-  const posts: Array<object> = res?.data || []
+  const isLoaded: Ref<boolean> = ref(true)
+  const refershNewData = async () => {
+    isLoaded.value = false
+    resPosts.value = await useGetData().resPosts()
+    res.value = resPosts.value.data
+    posts.value = res.value?.data
+    isLoaded.value = true
+  }
+
+  if (!res.value) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Internal Server Error! Mohon coba beberapa saat lagi!',
+      customClass: 'drop-shadow-br !rounded-lgm'
+    })
+  }
 </script>
 
 <template>
   <section>
     <Hero :resProfile="resProfile" />
 
-    <PostForm :resProfile="resProfile" />
+    <PostForm 
+      :resProfile="resProfile"
+      @refershNewData="refershNewData"
+    />
 
     <section class="container">
       <p class="text-center text-xl my-5 font-bold">Cerita dari Orang-orang</p>
-      <div class="w-11/12 mx-auto">
+      <div class="w-11/12 mx-auto" v-if="isLoaded">
         <PostCard 
           v-for="(post, idx) in posts"
           :key="idx"

@@ -4,4 +4,5 @@ export default interface StoreInterface {
   formData?: FormData
   password?: string
   path: string
+  params?: object
 }

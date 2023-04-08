@@ -1,7 +1,9 @@
 <script lang="ts" setup>
+  import Swal, { SweetAlertOptions } from 'sweetalert2'
   import StoreInterface from '~~/interfaces/store.interface'
 
   const props = defineProps(['resProfile'])
+  const emit = defineEmits(['refershNewData'])
   const resProfile = props.resProfile
   const dataUser: any = resProfile.data.value || null
 
@@ -36,10 +38,43 @@
     }
 
     const resStrorePost = await useStoreData(payload).resStorePost()
+    const res: any = resStrorePost.data.value
+    const err: any = resStrorePost.error.value?.data || null
 
-    setTimeout(() => {
-      location.reload()
-    }, 100)
+    if (res?.status) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Ceritamu berhasil diposting!',
+        customClass: 'drop-shadow-br !rounded-lgm',
+        showConfirmButton: false
+      })
+      story.value = ''
+      tags.value = ''
+      emit('refershNewData')
+    }
+
+    if (err) {
+      const data: SweetAlertOptions = {
+        title: 'Mohon login dulu untuk mulai bercerita!'
+      }
+
+      if (err?.statusCode == 400 && err?.message.includes('body')) data.title = 'Kamu belum menulis cerita apapun!'
+      Swal.fire({
+        icon: 'info',
+        title: data.title,
+        customClass: 'drop-shadow-br !rounded-lgm'
+      }).then((info) => {
+        if (info.isConfirmed || info.dismiss) navigateTo('/login')
+      })
+    }
+
+    if (!err && !res) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Internal Server Error! Mohon coba beberapa saat lagi!',
+        customClass: 'drop-shadow-br !rounded-lgm'
+      })
+    }
   }
 </script>
 
