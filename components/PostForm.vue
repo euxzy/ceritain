@@ -59,6 +59,7 @@
       }
 
       if (err?.statusCode == 400 && err?.message.includes('body')) data.title = 'Kamu belum menulis cerita apapun!'
+      if (err?.statusCode == 400 && err?.message.includes('tags')) data.title = 'Tag diawali dengan # dan hanya karakter alphanumeric yang diperbolehkan!'
       Swal.fire({
         icon: 'info',
         title: data.title,
