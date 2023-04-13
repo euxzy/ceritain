@@ -58,7 +58,7 @@
         title: 'Mohon login dulu untuk mulai bercerita!'
       }
 
-      if (err?.statusCode == 400 && err?.message.includes('body')) data.title = 'Kamu belum menulis cerita apapun!'
+      if (err?.statusCode == 400 && err?.message.includes('content')) data.title = 'Kamu belum menulis cerita apapun!'
       if (err?.statusCode == 400 && err?.message.includes('tags')) data.title = 'Tag diawali dengan # dan hanya karakter alphanumeric yang diperbolehkan!'
       Swal.fire({
         icon: 'info',
@@ -85,14 +85,14 @@
     <form ref="formPost" class="w-11/12 mx-auto mt-5 mb-10 flex flex-col justify-between gap-5 md:flex-row">
       <div class="relative flex-1">
         <textarea 
-          name="body"
-          id="body"
+          name="content"
+          id="content"
           placeholder="Tulis ceritamu"
           v-model="story"
           class="peer relative w-full border px-6 py-4 bg-accent-6 border-black rounded-lgm outline-none placeholder:text-transparent drop-shadow-br h-full"></textarea>
         <label 
           ref="storyLabel"
-          for="body" 
+          for="content" 
           class="card-border mx-3 mt-3 bg-accent-6 peer-hover:-translate-y-6 peer-focus:-translate-y-6">Tulis ceritamu</label>
       </div>
       <div class="lg:w-80 flex flex-col gap-7">
