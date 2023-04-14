@@ -7,7 +7,7 @@
   const { data: response } = resPosts.value
   const res: Ref<any> = ref(response)
   const posts: Ref<Array<object>> = ref(res.value?.data || [])
-  const err: any = resPosts.value?.error?.value?.data || null
+  const err: any = resPosts.value?.error || null
 
   const isLoaded: Ref<boolean> = ref(true)
   const refershNewData = async () => {
