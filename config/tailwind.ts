@@ -22,6 +22,7 @@ export default <Partial<Config>> {
           7: '#ffd182',
           8: '#faae2b',
           9: '#87e1a0',
+          10: '#d9d9d9'
         },
       },
       borderRadius: {
@@ -29,7 +30,8 @@ export default <Partial<Config>> {
       },
       dropShadow: {
         br: '.23rem .23rem 0 rgb(0, 0, 0)',
-        rd: '0 .12rem 0 rgb(0, 0, 0)'
+        rd: '0 .12rem 0 rgb(0, 0, 0)',
+        wt: '.23rem 0 0 rgb(255, 255, 255)',
       },
       fontFamily: {
         sans: ['Comfortaa', 'cursive']
