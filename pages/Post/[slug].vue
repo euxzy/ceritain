@@ -36,7 +36,7 @@
         </div>
 
         <div class="pt-12 sticky top-0 bg-white pb-8 z-20 drop-shadow-wt">
-          <FormComment />
+          <LazyFormComment :postId="post?.data?.id" />
         </div>
 
         <div v-if="statusComment">
