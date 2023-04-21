@@ -1,13 +1,13 @@
 <template>
-  <section class="border border-black rounded-lgm drop-shadow-br bg-white">
-    <form class="p-4">
+  <section>
+    <p class="max-w-max mx-auto font-semibold text-lg mb-4">Comment</p>
+    <form class="flex flex-col items-end">
       <textarea 
         name="comment" 
-        id="comment" 
-        placeholder="Tulis Komentarmu..."
-        class="outline-none border border-black w-full rounded-lg p-2 min-h-[2rem] mb-1.5"
+        id="comment"
+        class="outline-none w-full rounded-lg px-4 py-2 mb-4 bg-accent-6 drop-shadow-br"
       ></textarea>
-      <button class="w-full text-center bg-accent-9 rounded-lg border border-black py-2 font-bold">Beri Komentar!</button>
+      <button class="text-center max-w-max bg-accent-10 rounded-lg py-1.5 font-bold drop-shadow-br text-accent-10">Beri Komentar!</button>
     </form>
   </section>
 </template>

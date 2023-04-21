@@ -22,6 +22,7 @@ export default <Partial<Config>> {
           7: '#ffd182',
           8: '#faae2b',
           9: '#87e1a0',
+          10: '#d9d9d9'
         },
       },
       borderRadius: {
