@@ -11,8 +11,14 @@ export const useGetData = () => {
       }
     })
   }
-
-  const resPosts = async () => (await useFetch('api/post', { baseURL: baseApi }))
+  
+  const resPosts = async () => (await useFetch('api/post', {
+    baseURL: baseApi,
+    method: 'GET',
+    headers: {
+      'Authorization': token
+    }
+  }))
 
   const resDetailPost = async (postId: string) => (await useLazyFetch(`/api/post/${postId}`, { baseURL: baseApi }))
 
