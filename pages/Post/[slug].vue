@@ -26,7 +26,18 @@
       </div>
 
       <div class="w-20 mx-auto mb-3 rounded-full overflow-hidden drop-shadow-br aspect-square">
-        <img :src="post?.data?.user?.profile.photo" alt="Profile" class="w-full object-cover aspect-square" />
+        <img
+          v-if="post?.data?.user?.profile && post?.data?.user?.profile.photo"
+          :src="post?.data?.user?.profile.photo"
+          :alt="post?.data?.user?.name"
+          class="w-full object-cover aspect-square"
+        />
+        <img
+          v-else
+          src="~/assets/images/profile.png"
+          :alt="post?.data?.user?.name"
+          class="w-full object-cover aspect-square"
+        />
       </div>
       <p class="max-w-max mx-auto font-semibold text-lg mb-5">Cerita dari {{ post?.data?.user?.name }}</p>
 
