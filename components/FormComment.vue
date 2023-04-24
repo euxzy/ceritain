@@ -3,7 +3,13 @@
   import StoreInterface from '~~/interfaces/store.interface'
 
   const props = defineProps(['postId'])
-  const postId: string = props?.postId
+  let postId: string = props?.postId
+  watch(props, () => {
+    postId = props?.postId
+  })
+
+  const emit = defineEmits(['refreshComments'])
+  const content: Ref<string> = ref('')
 
   const formComment: Ref<any> = ref()
   const onFormSubmit = async () => {
@@ -22,8 +28,11 @@
         icon: 'success',
         title: 'Komentarmu telah dikirim!',
         customClass: 'drop-shadow-br !rounded-lgm',
-        showConfirmButton: false
+        showConfirmButton: false,
+        timer: 900
       })
+      content.value = ''
+      emit('refreshComments')
     }
 
     if (err) {
@@ -63,6 +72,7 @@
         name="content" 
         id="content"
         class="outline-none w-full rounded-lg px-4 py-2 mb-4 bg-accent-6 drop-shadow-br"
+        v-model="content"
       ></textarea>
       <button
         type="button"

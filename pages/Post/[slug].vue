@@ -9,6 +9,12 @@
   })
 
   const { pending: statusComment, data: resComments } = await useGetData().resComments(param)
+  const refreshComments = async () => {
+    const { pending, data } = await useGetData().resComments(param)
+    watch(data, () => {
+      resComments.value = data.value
+    })
+  }
   const comments: Ref<any> = ref()
   watch(resComments, () => {
     comments.value = resComments.value
@@ -47,7 +53,10 @@
         </div>
 
         <div class="pt-12 sticky top-0 bg-white pb-8 z-20 drop-shadow-wt">
-          <LazyFormComment :postId="post?.data?.id" />
+          <LazyFormComment
+            :postId="post?.data?.id"
+            @refreshComments="refreshComments"
+          />
         </div>
 
         <div v-if="statusComment">
