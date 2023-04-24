@@ -25,8 +25,8 @@
         <p>Ceritakan semua yang pengen kamu ceritakan!</p>
       </div>
 
-      <div class="w-20 mx-auto mb-3 rounded-full overflow-hidden drop-shadow-br">
-        <img src="~/assets/images/profile.png" alt="Profile" />
+      <div class="w-20 mx-auto mb-3 rounded-full overflow-hidden drop-shadow-br aspect-square">
+        <img :src="post?.data?.user?.profile.photo" alt="Profile" class="w-full object-cover aspect-square" />
       </div>
       <p class="max-w-max mx-auto font-semibold text-lg mb-5">Cerita dari {{ post?.data?.user?.name }}</p>
 
