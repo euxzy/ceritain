@@ -1,24 +1,22 @@
 <script lang="ts" setup>
   import Swal from 'sweetalert2'
 
-  const resPosts: Ref<any> = ref(await useGetData().resPosts())
   const resProfile = await useGetData().resProfile()
 
-  const { data: response } = resPosts.value
-  const res: Ref<any> = ref(response)
-  const posts: Ref<Array<object>> = ref(res.value?.data || [])
-  const err: any = resPosts.value?.error || null
-
-  const isLoaded: Ref<boolean> = ref(true)
+  const { pending, data: resPosts, error: err } = await useGetData().resPosts()
   const refershNewData = async () => {
-    isLoaded.value = false
-    resPosts.value = await useGetData().resPosts()
-    res.value = resPosts.value.data
-    posts.value = res.value?.data
-    isLoaded.value = true
+    const { pending, data } = await useGetData().resPosts()
+    watch(data, () => {
+      resPosts.value = data.value
+    })
   }
 
-  if (!res.value && !err) {
+  const posts: Ref<any> = ref([])
+  watch(resPosts, () => {
+    posts.value = resPosts.value
+  })
+
+  if (!resPosts.value && !err) {
     Swal.fire({
       icon: 'error',
       title: 'Internal Server Error! Mohon coba beberapa saat lagi!',
@@ -29,18 +27,22 @@
 
 <template>
   <section>
-    <Hero :resProfile="resProfile" />
+    <LazyHero :resProfile="resProfile" />
 
-    <PostForm 
+    <LazyPostForm 
       :resProfile="resProfile"
       @refershNewData="refershNewData"
     />
 
     <section class="container">
       <p class="text-center text-xl my-5 font-bold">Cerita dari Orang-orang</p>
-      <div class="w-11/12 mx-auto" v-if="isLoaded">
+      <div 
+        v-if="pending"
+        class="w-11/12 mx-auto text-center text-2xl"
+      >Loading...</div>
+      <div class="w-11/12 mx-auto" v-else>
         <PostCard 
-          v-for="(post, idx) in posts"
+          v-for="(post, idx) in posts?.data"
           :key="idx"
           :post="post"
         />

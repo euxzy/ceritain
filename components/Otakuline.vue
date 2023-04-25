@@ -1,13 +1,18 @@
 <script lang="ts" setup>
-  const resOtakuline = await useGetData().resOtakuLine()
-  const news: any = resOtakuline.data.value
+  const { pending, data } = await useGetData().resOtakuLine()
+  const news: Ref<any> = ref()
+  watch(data, () => {
+    news.value = data.value
+  })
 </script>
 
 <template>
   <section class="container">
     <div class="w-11/12 mx-auto text-center my-10">
       <p class="text-xl font-semibold mb-5">News by <a href="https://otakuline.id" target="_blank">Otaku Line</a></p>
-      <a 
+      <p v-if="pending" class="bg-accent-4 rounded-lgm border border-black drop-shadow-br py-1.5 pl-5 overflow-hidden  transition-all duration-300 hover:-translate-y-2">Loading...</p>
+      <a
+        v-else
         v-for="(item, idx) of news"
         :key="idx"
         :href="item?.link"

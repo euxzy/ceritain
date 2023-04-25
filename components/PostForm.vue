@@ -46,7 +46,8 @@
         icon: 'success',
         title: 'Ceritamu berhasil diposting!',
         customClass: 'drop-shadow-br !rounded-lgm',
-        showConfirmButton: false
+        showConfirmButton: false,
+        timer: 900
       })
       story.value = ''
       tags.value = ''

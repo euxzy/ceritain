@@ -12,7 +12,7 @@ export const useGetData = () => {
     })
   }
   
-  const resPosts = async () => (await useFetch('api/post', {
+  const resPosts = async () => (await useLazyFetch('api/post', {
     baseURL: baseApi,
     method: 'GET',
     headers: {
@@ -24,7 +24,7 @@ export const useGetData = () => {
 
   const resComments = async (postId: string) => (await useLazyFetch(`/api/${postId}/comment`, { baseURL: baseApi }))
 
-  const resOtakuLine = async () => (await useFetch('wp-json/wp/v2/posts', {
+  const resOtakuLine = async () => (await useLazyFetch('wp-json/wp/v2/posts', {
     baseURL: otakuLineApi,
     params: {
       per_page: 1
