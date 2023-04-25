@@ -45,7 +45,9 @@
           class="w-full object-cover aspect-square"
         />
       </div>
-      <p class="max-w-max mx-auto font-semibold text-lg mb-5">Cerita dari {{ post?.data?.user?.name }}</p>
+      <p class="max-w-max mx-auto font-semibold text-lg mb-5">
+        Cerita dari <NuxtLink :to="`/user/${post?.data?.user?.username}`">{{ post?.data?.user?.name }}</NuxtLink>
+      </p>
 
       <div class="w-11/12 mx-auto">
         <div class="bg-primary border border-black rounded-lgm p-8 drop-shadow-br mb-3">
