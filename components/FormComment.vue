@@ -71,12 +71,13 @@
       <textarea 
         name="content" 
         id="content"
-        class="outline-none w-full rounded-lg px-4 py-2 mb-4 bg-accent-6 drop-shadow-br"
+        class="outline-none w-full rounded-lg px-4 pt-3 pb-2 mb-4 bg-accent-6 drop-shadow-br"
         v-model="content"
+        placeholder="Tulis komentarmu disini..."
       ></textarea>
       <button
         type="button"
-        class="text-center max-w-max bg-accent-10 rounded-lg py-1.5 font-bold drop-shadow-br text-accent-10"
+        class="text-center max-w-max bg-accent-10 rounded-lg py-2.5 font-bold drop-shadow-br px-4 text-xs transition-all duration-300 hover:-translate-y-1"
         v-on:click="onFormSubmit"
       >
         Beri Komentar!

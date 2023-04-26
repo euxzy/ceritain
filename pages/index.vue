@@ -1,24 +1,39 @@
 <script lang="ts" setup>
   import Swal from 'sweetalert2'
+  
+  const posts: Ref<Array<any>> = ref([])
+  const page: Ref<number> = ref(1)
+  const payload: { params: object } = { params: { page: 1 } }
+  const isMoreData: Ref<boolean> = ref(true)
 
-  const resPosts: Ref<any> = ref(await useGetData().resPosts())
-  const resProfile = await useGetData().resProfile()
-
-  const { data: response } = resPosts.value
-  const res: Ref<any> = ref(response)
-  const posts: Ref<Array<object>> = ref(res.value?.data || [])
-  const err: any = resPosts.value?.error || null
-
-  const isLoaded: Ref<boolean> = ref(true)
+  const resProfile = await useGetData().resProfile()  
+  const { pending, data: resPosts, error: err } = await useGetData().resPosts(payload)
   const refershNewData = async () => {
-    isLoaded.value = false
-    resPosts.value = await useGetData().resPosts()
-    res.value = resPosts.value.data
-    posts.value = res.value?.data
-    isLoaded.value = true
+    posts.value = []
+    const { pending, data } = await useGetData().resPosts(payload)
+    watch(data, () => {
+      resPosts.value = data.value
+    })
+    page.value = 1
   }
 
-  if (!res.value && !err) {
+  watch(resPosts, () => {
+    const dataPosts: any = resPosts.value
+    const newPosts: Array<object> = dataPosts?.data || []
+    if (newPosts.length < 5) isMoreData.value = false
+    newPosts.map((item) => {
+      posts.value.push(item)
+    })
+  })
+
+  const loadMore = async () => {
+    page.value++
+    const payload: { params: object } = { params: { page: page.value } }
+    const { pending: morePending, data, error: err } = await useGetData().resPosts(payload)
+    resPosts.value = data.value
+  }
+
+  if (!resPosts.value && !err) {
     Swal.fire({
       icon: 'error',
       title: 'Internal Server Error! Mohon coba beberapa saat lagi!',
@@ -29,24 +44,37 @@
 
 <template>
   <section>
-    <Hero :resProfile="resProfile" />
+    <LazyHero :resProfile="resProfile" />
 
-    <PostForm 
+    <LazyPostForm 
       :resProfile="resProfile"
       @refershNewData="refershNewData"
     />
 
     <section class="container">
       <p class="text-center text-xl my-5 font-bold">Cerita dari Orang-orang</p>
-      <div class="w-11/12 mx-auto" v-if="isLoaded">
+      <!-- <div 
+        v-if="pending"
+        class="w-11/12 mx-auto text-center text-2xl"
+      >Loading...</div> -->
+      <div class="w-11/12 mx-auto">
+        <div class="text-center text-2xl" v-if="pending">Loading...</div>
         <PostCard 
           v-for="(post, idx) in posts"
           :key="idx"
           :post="post"
+          v-else
         />
       </div>
 
-      <button type="button" class="border bg-white my-16 font-medium block border-black rounded-lgm px-8 py-1 mx-auto drop-shadow-br transition-all duration-300 hover:-translate-y-1">Load more</button>
+      <button
+        type="button"
+        class="border bg-white my-16 font-medium block border-black rounded-lgm px-8 py-1 mx-auto drop-shadow-br transition-all duration-300 hover:-translate-y-1"
+        v-on:click="loadMore"
+        v-if="isMoreData"
+      >
+        Load more
+      </button>
     </section>
 
     <Otakuline />

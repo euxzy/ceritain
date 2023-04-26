@@ -31,7 +31,10 @@
         <p>Ceritakan semua yang pengen kamu ceritakan!</p>
       </div>
 
-      <div class="w-20 mx-auto mb-3 rounded-full overflow-hidden drop-shadow-br aspect-square">
+      <NuxtLink
+        :to="`/user/${post?.data?.user?.username}`"
+        class="block w-20 mx-auto mb-3 rounded-full overflow-hidden drop-shadow-br aspect-square"
+      >
         <img
           v-if="post?.data?.user?.profile && post?.data?.user?.profile.photo"
           :src="post?.data?.user?.profile.photo"
@@ -44,8 +47,10 @@
           :alt="post?.data?.user?.name"
           class="w-full object-cover aspect-square"
         />
-      </div>
-      <p class="max-w-max mx-auto font-semibold text-lg mb-5">Cerita dari {{ post?.data?.user?.name }}</p>
+      </NuxtLink>
+      <p class="max-w-max mx-auto font-semibold text-lg mb-5">
+        Cerita dari <NuxtLink :to="`/user/${post?.data?.user?.username}`">{{ post?.data?.user?.name }}</NuxtLink>
+      </p>
 
       <div class="w-11/12 mx-auto">
         <div class="bg-primary border border-black rounded-lgm p-8 drop-shadow-br mb-3">
