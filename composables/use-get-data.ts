@@ -21,7 +21,12 @@ export const useGetData = () => {
     params: data.params
   }))
 
-  const resDetailPost = async (postId: string) => (await useLazyFetch(`/api/post/${postId}`, { baseURL: baseApi }))
+  const resDetailPost = async (postId: string, postViews?: string) => (await useLazyFetch(`/api/post/${postId}`, {
+    baseURL: baseApi,
+    headers: {
+      'D-Post-Views': postViews || ''
+    }
+  }))
 
   const resComments = async (postId: string) => (await useLazyFetch(`/api/${postId}/comment`, { baseURL: baseApi }))
 

@@ -1,16 +1,17 @@
 <script lang="ts" setup>
   const route = useRoute()
-  const param = route.params?.slug.toString()
+  const postId = route.params?.slug.toString()
+  const postViews: string = 'update-views'
 
-  const { pending: postStatus, data: resPost } = await useGetData().resDetailPost(param)
+  const { pending: postStatus, data: resPost } = await useGetData().resDetailPost(postId, postViews)
   const post: Ref<any> = ref()
   watch(resPost, () => {
     post.value = resPost.value
   })
 
-  const { pending: statusComment, data: resComments } = await useGetData().resComments(param)
+  const { pending: statusComment, data: resComments } = await useGetData().resComments(postId)
   const refreshComments = async () => {
-    const { pending, data } = await useGetData().resComments(param)
+    const { pending, data } = await useGetData().resComments(postId)
     watch(data, () => {
       resComments.value = data.value
     })
