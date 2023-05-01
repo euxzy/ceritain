@@ -1,9 +1,8 @@
 <script lang="ts" setup>
   const route = useRoute()
   const postId = route.params?.slug.toString()
-  const postViews: string = 'update-views'
 
-  const { pending: postStatus, data: resPost } = await useGetData().resDetailPost(postId, postViews)
+  const { pending: postStatus, data: resPost } = await useGetData().resDetailPost(postId)
   const post: Ref<any> = ref()
   watch(resPost, () => {
     post.value = resPost.value
