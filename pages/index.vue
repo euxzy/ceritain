@@ -51,6 +51,8 @@
       @refershNewData="refershNewData"
     />
 
+    <Hastag />
+
     <section class="container">
       <p class="text-center text-xl my-5 font-bold">Cerita dari Orang-orang</p>
       <!-- <div 
