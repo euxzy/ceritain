@@ -1,6 +1,7 @@
 <script lang="ts" setup>
   import Swal from 'sweetalert2'
   
+  const route = useRoute()
   const posts: Ref<Array<any>> = ref([])
   const page: Ref<number> = ref(1)
   const payload: { params: object } = { params: { page: 1 } }
@@ -32,6 +33,28 @@
     const { pending: morePending, data, error: err } = await useGetData().resPosts(payload)
     resPosts.value = data.value
   }
+
+  watch(route, async () => {
+    const postKey: string = route.query?.posts?.toString() || ''
+    let order_by = postKey
+    if (postKey == 'menarik') order_by = 'most_likes'
+    if (postKey == 'populer') order_by = 'most_views'
+
+    if (postKey) {
+      posts.value = []
+      const payload: {
+        params: object
+      } = {
+        params: {
+          page: 1,
+          data: 10,
+          order_by
+        }
+      }
+      const { pending, data, error: err } = await useGetData().resPosts(payload)
+      resPosts.value = data.value
+    }
+  })
 
   if (!resPosts.value && !err) {
     Swal.fire({
