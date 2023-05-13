@@ -14,7 +14,10 @@ export default defineNuxtConfig({
   routeRules: {
     '/*': { ssr: false }
   },
-  modules: ['@nuxtjs/tailwindcss'],
+  modules: [
+    '@nuxtjs/tailwindcss',
+    'nuxt-icon'
+  ],
   tailwindcss: {
     cssPath: '~/assets/css/tailwind.css',
     configPath: '~/config/tailwind.ts',
