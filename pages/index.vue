@@ -59,6 +59,12 @@
     page.value = 1
   })
 
+  const isShare: Ref<boolean> = ref(false)
+  const postContent: Ref<any> = ref()
+  const setShareContent = (post: any) => {
+    postContent.value = post
+  }
+
   if (!resPosts.value && !err) {
     Swal.fire({
       icon: 'error',
@@ -91,6 +97,8 @@
           v-for="(post, idx) in posts"
           :key="idx"
           :post="post"
+          @share="isShare = true"
+          @setShareContent="setShareContent"
           v-else
         />
       </div>
@@ -108,5 +116,21 @@
     <Otakuline />
 
     <Footer />
+
+    <Transition
+      enter-active-class="duration-300"
+      enter-from-class="transform opacity-0 translate-y-6"
+      enter-to-class="opacity-100 translate-y-0"
+      leave-active-class="duration-300"
+      leave-from-class="opacity-100 translate-y-0"
+      leave-to-class="transform opacity-0 translate-y-6"
+    >
+      <ModalShare 
+        v-if="isShare"
+        :postContent="postContent"
+        :setShareContent="setShareContent"
+        @share="isShare = false"
+      />
+    </Transition>
   </section>
 </template>

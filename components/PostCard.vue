@@ -5,6 +5,8 @@
   const props = defineProps(['post'])
   const post = props.post
 
+  const emit = defineEmits(['share', 'setShareContent'])
+
   const postId: string = post?.id || ''
   const payload: StoreInterface = {
     path: `api/${postId}/like`
@@ -52,6 +54,11 @@
       })
     }
   }
+
+  const onShareClick = () => {
+    emit('setShareContent', post)
+    emit('share')
+  }
 </script>
 
 <template>
@@ -88,7 +95,12 @@
           </span>
           <img src="~/assets/images/icons/topic.svg" alt="">
         </NuxtLink>
-        <div class="bg-white rounded-full w-max p-1 border border-black drop-shadow-rd cursor-pointer hover:-translate-y-1 transition-all duration-300">
+        <div class="group relative bg-white rounded-full w-max p-1 border border-black drop-shadow-rd cursor-pointer hover:-translate-y-1 transition-all duration-300" @click="onShareClick">
+          <span
+            class="absolute -top-7 w-max -left-4 text-xs bg-white px-2 py-0.5 rounded-lgm border border-black opacity-0 transition-all duration-300 group-hover:opacity-100 select-none"
+          >
+            Share
+          </span>
           <img src="~/assets/images/icons/share.svg" alt="">
         </div>
       </div>
