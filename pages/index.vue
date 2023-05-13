@@ -36,24 +36,27 @@
 
   watch(route, async () => {
     const postKey: string = route.query?.posts?.toString() || ''
-    let order_by = postKey
+    let order_by: string = postKey
+
     if (postKey == 'menarik') order_by = 'most_likes'
     if (postKey == 'populer') order_by = 'most_views'
+    const data: number = order_by == 'most_likes' || order_by == 'most_views' ? 10 : 5
 
-    if (postKey) {
-      posts.value = []
-      const payload: {
-        params: object
-      } = {
-        params: {
-          page: 1,
-          data: 10,
-          order_by
-        }
+    posts.value = []
+    const payload: {
+      params: object
+    } = {
+      params: {
+        page: 1,
+        data,
+        order_by
       }
-      const { pending, data, error: err } = await useGetData().resPosts(payload)
-      resPosts.value = data.value
     }
+    const { pending, data: resData, error: err } = await useGetData().resPosts(payload)
+    resPosts.value = resData.value
+    if (order_by == 'most_likes' || order_by == 'most_views') isMoreData.value = false
+    else isMoreData.value = true
+    page.value = 1
   })
 
   if (!resPosts.value && !err) {
