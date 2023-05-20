@@ -44,7 +44,7 @@
           <p class="text-sm sm:hidden" v-if="!pending">{{ dataUser?.profile?.bio }}</p>
         </div>
 
-        <p class="font-bold text-lg px-4 md:px-8">Postingan dari euxzy</p>
+        <p class="font-bold text-lg px-4 md:px-8">Postingan dari {{ dataUser?.name }}</p>
       </div>
 
       <div class="w-11/12 mx-auto" v-if="!pending">
