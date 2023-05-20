@@ -11,6 +11,14 @@ export const useGetData = () => {
       }
     })
   }
+
+  const resUserProfile = async (username: string) => (await useLazyFetch(`api/user/${username}`, {
+    baseURL: baseApi,
+    method: 'GET',
+    headers: {
+      'Authorization': token
+    }
+  }))
   
   const resPosts = async (data: { params: object }) => (await useLazyFetch('api/post', {
     baseURL: baseApi,
@@ -32,5 +40,5 @@ export const useGetData = () => {
     }
   }))
 
-  return { resProfile, resPosts, resOtakuLine, resDetailPost, resComments }
+  return { resProfile, resPosts, resOtakuLine, resDetailPost, resComments, resUserProfile }
 }

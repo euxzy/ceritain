@@ -66,7 +66,7 @@
     <div class="bg-primary border border-black rounded-lgm px-6 pt-3 pb-12 drop-shadow-br relative">
       <NuxtLink :to="`/post/${post?.id}`" class="absolute block w-full h-full top-0 left-0"></NuxtLink>
 
-      <p class="text-xs mb-4">Dari <span class="text-lg font-medium">{{ post?.user?.name }}</span></p>
+      <p class="relative text-xs mb-4 max-w-max">Dari <NuxtLink :to="`/user/${post?.user?.username}`" class="text-lg font-medium">{{ post?.user?.name }}</NuxtLink></p>
 
       <p class="mb-1">{{ post?.content }}</p>
 

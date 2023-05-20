@@ -50,7 +50,7 @@
   }
 </script>
 <template>
-  <section class="fixed inset-0 m-auto w-full h-screen flex justify-center items-center">
+  <section class="fixed inset-0 m-auto w-full h-screen flex justify-center items-center z-50">
     <div class="absolute top-0 left-0 w-full h-full" @click="emit('share')"></div>
     <div class="relative bg-accent-7 w-max rounded-lgm p-6 pt-4 border border-black drop-shadow-br">
       <h2 class="text-center mb-4 font-bold text-xl">Bagikan Cerita Ini!</h2>
