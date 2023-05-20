@@ -13,6 +13,38 @@
   const setShareContent = (post: any) => {
     postContent.value = post
   }
+
+  const posts: Ref<Array<any>> = ref([])
+  const page: Ref<number> = ref(1)
+  const payload: { params: object } = {
+    params: { 
+      page: 1,
+      posts_by: username
+    }
+  }
+  const isMoreData: Ref<boolean> = ref(true)
+
+  const { pending: isPostPending, data: resPosts, error: errPosts } = await useGetData().resPosts(payload)
+  watch(resPosts, () => {
+    const dataPosts: any = resPosts.value
+    const newPosts: Array<object> = dataPosts?.data || []
+    if (newPosts.length < 5 ) isMoreData.value = false
+    newPosts.map((item) => {
+      posts.value.push(item)
+    })
+  })
+
+  const loadMore = async () => {
+    page.value++
+    const payload: { params: object } = {
+      params: {
+        page: page.value,
+        posts_by: username
+      }
+    }
+    const { pending: morePending, data, error: err } = await useGetData().resPosts(payload)
+    resPosts.value = data.value
+  }
 </script>
 <template>
   <section>
@@ -47,15 +79,24 @@
         <p class="font-bold text-lg px-4 md:px-8">Postingan dari {{ dataUser?.name }}</p>
       </div>
 
-      <div class="w-11/12 mx-auto" v-if="!pending">
+      <div class="w-11/12 mx-auto" v-if="!isPostPending">
         <PostCard
-          v-for="(post, idx) of dataUser?.posts"
+          v-for="(post, idx) of posts"
           :key="idx"
           :post="post"
           @share="isShare = true"
           @setShareContent="setShareContent"
         />
       </div>
+
+      <button
+        type="button"
+        class="border bg-white my-16 font-medium block border-black rounded-lgm px-8 py-1 mx-auto drop-shadow-br transition-all duration-300 hover:-translate-y-1"
+        v-on:click="loadMore"
+        v-if="isMoreData"
+      >
+        Load more
+      </button>
     </section>
 
     <Otakuline />
