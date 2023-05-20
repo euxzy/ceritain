@@ -25,7 +25,7 @@
                 src="~/assets/images/profile.png" 
                 alt="Profile" 
                 class="w-full object-cover aspect-square"
-                v-if="pending">
+                v-if="!dataUser?.profile && !dataUser?.profile?.photo">
               <img 
                 :src="dataUser?.profile?.photo" 
                 :alt="dataUser?.name" 
