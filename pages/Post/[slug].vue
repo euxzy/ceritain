@@ -22,7 +22,7 @@
 </script>
 <template>
   <section class="container">
-    <div class="pt-16 pb-5">
+    <div class="pt-8 md:pt-16 pb-5">
       <div class="w-72 mx-auto mb-2">
         <img class="w-full" src="~/assets/images/cats.png" alt="Ceritain">
       </div>
