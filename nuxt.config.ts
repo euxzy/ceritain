@@ -11,9 +11,7 @@ export default defineNuxtConfig({
       ]
     }
   },
-  routeRules: {
-    '/*': { ssr: false }
-  },
+  ssr: false,
   modules: [
     '@nuxtjs/tailwindcss',
     'nuxt-icon'
