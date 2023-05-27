@@ -29,7 +29,8 @@
 
   const isSubmited: Ref<boolean> = ref(false)
   const formRegist: Ref = ref()
-  const onRegist = async () => {
+  const onRegist = async (evt: any) => {
+    evt.preventDefault()
     isSubmited.value = true
     const formData: FormData = new FormData(formRegist.value)
 
@@ -141,7 +142,7 @@
         </div>
         <div class="relative">
           <button
-            type="button"
+            type="submit"
             class="relative w-full border px-6 py-[10px] bg-accent-4 font-semibold border-black rounded-lgm hover:bg-secondary transition-all duration-300 drop-shadow-br"
             v-on:click="onRegist"
             :disabled="isSubmited"
