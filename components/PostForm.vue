@@ -29,7 +29,8 @@
   })
 
   const formPost: Ref = ref()
-  const onFormSubmit = async () => {    
+  const onFormSubmit = async (evt: any) => {
+    evt.preventDefault()
     const formData = new FormData(formPost.value)
 
     const payload: StoreInterface = {
@@ -127,7 +128,7 @@
         </div>
         <div class="relative">
           <button
-            type="button"
+            type="submit"
             class="relative w-full border px-6 py-[10px] bg-accent-2 font-semibold border-black rounded-lgm hover:bg-secondary transition-all duration-300 drop-shadow-br"
             v-on:click="onFormSubmit"
           >Bagikan Ceritamu!</button>

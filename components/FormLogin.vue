@@ -23,7 +23,8 @@
 
   const isSubmited: Ref<boolean> = ref(false)
   const formLogin: Ref = ref()
-  const onLogin = async () => {
+  const onLogin = async (evt: any) => {
+    evt.preventDefault()
     isSubmited.value = true
     const formData: FormData = new FormData(formLogin.value)
 
@@ -74,7 +75,8 @@
         icon: 'success',
         title: 'Login berhasil!',
         customClass: 'drop-shadow-br !rounded-lgm',
-        showConfirmButton: false
+        showConfirmButton: false,
+        timer: 900
       })
       navigateTo('/')
     }
@@ -123,7 +125,7 @@
         </div>
         <div class="relative">
           <button
-            type="button"
+            type="submit"
             class="relative w-full border px-6 py-[10px] bg-accent-9 font-semibold border-black rounded-lgm hover:bg-secondary transition-all duration-300 drop-shadow-br"
             v-on:click="onLogin"
             :disabled="isSubmited"
