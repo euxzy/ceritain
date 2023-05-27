@@ -11,6 +11,15 @@
 }
 
 /* custoom sweetalert */
+.swal2-title {
+  @apply !text-2xl md:!text-3xl;
+}
+.swal2-confirm, .swal2-cancel {
+  @apply drop-shadow-br !rounded-lgm !outline-none font-bold !transition-all !duration-300 hover:-translate-y-1 focus:!shadow-none;
+}
 .swal2-confirm {
-  @apply drop-shadow-br !rounded-lgm !bg-accent-9 outline-none !px-10 font-bold !transition-all !duration-300 hover:-translate-y-1 hover:!bg-accent-9 focus:!shadow-none;
+  @apply !bg-accent-9 hover:!bg-accent-9 !px-10;
+}
+.swal2-cancel {
+  @apply !bg-accent-5 hover:!bg-accent-5 !px-8;
 }

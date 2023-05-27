@@ -23,6 +23,16 @@ export const useStoreData = (data: StoreInterface) => {
     })
   }
 
+  const resLogout = async () => {
+    return await useFetch(data.path, {
+      baseURL: baseApi,
+      method: 'POST',
+      headers: {
+        'Authorization': token
+      }
+    })
+  }
+
   const resRegister = async () => {
     return await useFetch(data.path, {
       baseURL: baseApi,
@@ -60,5 +70,5 @@ export const useStoreData = (data: StoreInterface) => {
     })
   }
 
-  return { resStorePost, resLogin, resRegister, resVerifyEmail, resComment, resLikePost }
+  return { resStorePost, resLogin, resLogout, resRegister, resVerifyEmail, resComment, resLikePost }
 }
