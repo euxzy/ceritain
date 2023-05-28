@@ -9,7 +9,7 @@
 
   const resProfile = await useGetData().resProfile()  
   const { pending, data: resPosts, error: err } = await useGetData().resPosts(payload)
-  const refershNewData = async () => {
+  const refreshNewData = async () => {
     posts.value = []
     const { pending, data } = await useGetData().resPosts(payload)
     watch(data, () => {
@@ -80,10 +80,10 @@
 
     <LazyPostForm 
       :resProfile="resProfile"
-      @refershNewData="refershNewData"
+      @refreshNewData="refreshNewData"
     />
 
-    <Hastag />
+    <Hashtag />
 
     <section class="container">
       <p class="text-center text-xl my-5 font-bold">Cerita dari Orang-orang</p>

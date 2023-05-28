@@ -18,6 +18,6 @@
       </div>
     </section>
 
-    <FormRegistrer />
+    <FormRegister />
   </section>
 </template>

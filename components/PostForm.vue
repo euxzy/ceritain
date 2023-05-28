@@ -3,7 +3,7 @@
   import StoreInterface from '~~/interfaces/store.interface'
 
   const props = defineProps(['resProfile'])
-  const emit = defineEmits(['refershNewData'])
+  const emit = defineEmits(['refreshNewData'])
   const resProfile = props.resProfile
   const dataUser: any = resProfile.data.value || null
 
@@ -52,7 +52,7 @@
       })
       story.value = ''
       tags.value = ''
-      emit('refershNewData')
+      emit('refreshNewData')
     }
 
     if (err) {
