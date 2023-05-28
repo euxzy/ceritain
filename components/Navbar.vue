@@ -70,7 +70,7 @@
   }
 </script>
 <template>
-  <nav class="fixed bottom-8 right-4 sm:right-12">
+  <nav class="fixed bottom-8 right-4 sm:right-12 z-50">
     <Transition
       enter-active-class="duration-300 delay-100"
       enter-from-class="transform opacity-0 translate-y-6"
