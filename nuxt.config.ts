@@ -15,8 +15,9 @@ export default defineNuxtConfig({
   ssr: false,
 
   modules: [
+    '@pinia/nuxt',
     '@nuxtjs/tailwindcss',
-    'nuxt-icon'
+    'nuxt-icon',
   ],
 
   tailwindcss: {
@@ -32,5 +33,9 @@ export default defineNuxtConfig({
 
   devtools: {
     enabled: true
-  }
+  },
+
+  imports: {
+    dirs: ['stores']
+  },
 })
