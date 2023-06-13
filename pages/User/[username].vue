@@ -45,6 +45,8 @@
     const { pending: morePending, data, error: err } = await useGetData().resPosts(payload)
     resPosts.value = data.value
   }
+
+  const isShowUpdate: Ref<boolean> = ref(false)
 </script>
 <template>
   <section>
@@ -68,6 +70,15 @@
               <div class="md:flex gap-4 items-baseline mb-2">
                 <p class="text-2xl font-bold" v-if="!pending">{{ dataUser?.name }}</p>
                 <p class="text-xs">1K followers • 1K following</p>
+                <div>
+                  <button
+                    type="button"
+                    class="rounded-lgm text-xs font-bold bg-accent-3 px-2 py-1 border border-black drop-shadow-br hover:-translate-y-1 transition-all duration-300"
+                    @click="isShowUpdate = true"
+                  >
+                    Edit profile
+                  </button>
+                </div>
               </div>
               <p class="text-sm hidden sm:block" v-if="!pending">{{ dataUser?.profile?.bio }}</p>
             </div>
@@ -115,6 +126,20 @@
         :postContent="postContent"
         :setShareContent="setShareContent"
         @share="isShare = false"
+      />
+    </Transition>
+
+    <Transition
+      enter-active-class="duration-300"
+      enter-from-class="transform opacity-0 translate-y-6"
+      enter-to-class="opacity-100 translate-y-0"
+      leave-active-class="duration-300"
+      leave-from-class="opacity-100 translate-y-0"
+      leave-to-class="transform opacity-0 translate-y-6"
+    >
+      <ModalEditProfile
+        v-if="isShowUpdate"
+        @isUpdate="isShowUpdate = false"
       />
     </Transition>
   </section>

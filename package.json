@@ -15,6 +15,7 @@
     "nuxt-icon": "^0.4.0"
   },
   "dependencies": {
+    "croppie": "^2.6.5",
     "sweetalert2": "^11.7.3",
     "vue-social-sharing": "^4.0.0-alpha4"
   }
