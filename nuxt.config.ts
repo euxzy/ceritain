@@ -11,18 +11,26 @@ export default defineNuxtConfig({
       ]
     }
   },
+
   ssr: false,
+
   modules: [
     '@nuxtjs/tailwindcss',
     'nuxt-icon'
   ],
+
   tailwindcss: {
     cssPath: '~/assets/css/tailwind.css',
     configPath: '~/config/tailwind.ts',
     viewer: false
   },
+
   appConfig: {
     baseApi: process.env.APP_API,
     otakuLineApi: process.env.OTAKULINE_API
+  },
+
+  devtools: {
+    enabled: true
   }
 })
