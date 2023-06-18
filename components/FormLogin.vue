@@ -1,6 +1,5 @@
 <script lang="ts" setup>
   import Swal, { SweetAlertOptions } from 'sweetalert2'
-  import StoreInterface from '~~/interfaces/store.interface'
 
   const usernameLabel: Ref = ref()
   const passwordLabel: Ref = ref()
@@ -21,36 +20,38 @@
     })
   })
 
+  const { login: useLogin } = authStore()
+  const { status, message, data } = storeToRefs(authStore())
+  const { getProfile } = userStore()
+  const { setToken } = useAuthToken()
+
   const isSubmited: Ref<boolean> = ref(false)
   const formLogin: Ref = ref()
+
   const onLogin = async (evt: any) => {
     evt.preventDefault()
     isSubmited.value = true
+
     const formData: FormData = new FormData(formLogin.value)
+    await useLogin(formData)
 
-    const payload: StoreInterface = {
-      path: 'api/auth/login',
-      formData
-    }
+    const token: string = data.value?.token || ''
 
-    const resLogin = await useStoreData(payload).resLogin()
-    const res: any = resLogin.data.value
-    const token: string = res?.data?.token || ''
-    const err: any = resLogin.error.value?.data || null
-
-    if (err) {
+    if (!status.value) {
       const data: SweetAlertOptions = {
         icon: 'error',
-        title: 'Oopss! jangan lupa isi username sama password!',
+        title: 'Internal Server Error! Mohon coba beberapa saat lagi!',
         confirmButtonText: 'OK'
       }
-      if (err?.statusCode == 404) {
+
+      if (message.value.includes('empty')) data.title = 'Oopss! jangan lupa isi username dan password!'
+      if (message.value.includes('wrong!')) data.title = 'Oopss! username atau password salah!'
+      if (message.value.includes('not found!')) {
         data.title = 'Oopss! usernamemu belum terdaftar!'
         data.icon = 'warning'
         data.confirmButtonText = 'Daftar sekarang!'
-      } else if (err?.statusCode == 401 && err?.message.includes('wrong!')) {
-        data.title = 'Oopss! username atau passwordmu salah!'
-      } else if (err?.statusCode == 401 && err?.message.includes('verify')) {
+      }
+      if (message.value.includes('verify')) {
         data.title = 'Oopss! mohon verifikasi email terlebih dahulu!'
         data.icon = 'warning'
       }
@@ -63,13 +64,15 @@
         customClass: 'drop-shadow-br !rounded-lgm'
       }).then((info) => {
         if (info.isConfirmed) {
-          if (err?.statusCode == 404) navigateTo('/register')
+          if (message.value.includes('not found!')) navigateTo('/register')
         }
       })
     }
 
     if (token) {
-      localStorage.setItem('token', token)
+      setToken(token)
+      await getProfile()
+
       Swal.fire({
         position: 'top-end',
         icon: 'success',
@@ -78,15 +81,8 @@
         showConfirmButton: false,
         timer: 900
       })
+      
       navigateTo('/')
-    }
-
-    if (!err && !token) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Internal Server Error! Mohon coba beberapa saat lagi!',
-        customClass: 'drop-shadow-br !rounded-lgm'
-      })
     }
 
     isSubmited.value = false

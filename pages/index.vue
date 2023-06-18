@@ -1,37 +1,45 @@
 <script lang="ts" setup>
-  import Swal from 'sweetalert2'
+  import DetailPostInterface from '~/interfaces/post/detail.interface'
   
   const route = useRoute()
-  const posts: Ref<Array<any>> = ref([])
+  const posts: Ref<Array<DetailPostInterface>> = ref([])
   const page: Ref<number> = ref(1)
-  const payload: { params: object } = { params: { page: 1 } }
+  const payload: object = { page: 1 }
   const isMoreData: Ref<boolean> = ref(true)
 
-  const resProfile = await useGetData().resProfile()  
-  const { pending, data: resPosts, error: err } = await useGetData().resPosts(payload)
+  const isPostsLoaded: Ref<boolean> = ref(false)
+  const { getListPost } = postStore()
+  const { listPosts, status } = storeToRefs(postStore())
+
+  await getListPost(payload)
+  if (status) {
+    posts.value = listPosts.value
+    isPostsLoaded.value = true
+  }
+ 
   const refreshNewData = async () => {
+    isPostsLoaded.value = false
     posts.value = []
-    const { pending, data } = await useGetData().resPosts(payload)
-    watch(data, () => {
-      resPosts.value = data.value
-    })
+    await getListPost(payload)
+
     page.value = 1
   }
 
-  watch(resPosts, () => {
-    const dataPosts: any = resPosts.value
-    const newPosts: Array<object> = dataPosts?.data || []
+  watch(listPosts, () => {
+    const newPosts: Array<DetailPostInterface> = listPosts.value || []
     if (newPosts.length < 5) isMoreData.value = false
     newPosts.map((item) => {
       posts.value.push(item)
     })
+
+    isPostsLoaded.value = true
   })
 
   const loadMore = async () => {
     page.value++
-    const payload: { params: object } = { params: { page: page.value } }
-    const { pending: morePending, data, error: err } = await useGetData().resPosts(payload)
-    resPosts.value = data.value
+    const payload: object = { page: page.value }
+
+    await getListPost(payload)
   }
 
   watch(route, async () => {
@@ -43,17 +51,14 @@
     const data: number = order_by == 'most_likes' || order_by == 'most_views' ? 10 : 5
 
     posts.value = []
-    const payload: {
-      params: object
-    } = {
-      params: {
+    const payload: object = {
         page: 1,
         data,
-        order_by
-      }
+        order_by,
     }
-    const { pending, data: resData, error: err } = await useGetData().resPosts(payload)
-    resPosts.value = resData.value
+
+    await getListPost(payload)
+
     if (order_by == 'most_likes' || order_by == 'most_views') isMoreData.value = false
     else isMoreData.value = true
     page.value = 1
@@ -64,22 +69,13 @@
   const setShareContent = (post: any) => {
     postContent.value = post
   }
-
-  if (!resPosts.value && !err) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Internal Server Error! Mohon coba beberapa saat lagi!',
-      customClass: 'drop-shadow-br !rounded-lgm'
-    })
-  }
 </script>
 
 <template>
   <section>
-    <LazyHero :resProfile="resProfile" />
+    <LazyHero />
 
-    <LazyPostForm 
-      :resProfile="resProfile"
+    <LazyPostForm
       @refreshNewData="refreshNewData"
     />
 
@@ -92,7 +88,7 @@
         class="w-11/12 mx-auto text-center text-2xl"
       >Loading...</div> -->
       <div class="w-11/12 mx-auto">
-        <div class="text-center text-2xl" v-if="pending">Loading...</div>
+        <div class="text-center text-2xl" v-if="!isPostsLoaded">Loading...</div>
         <PostCard 
           v-for="(post, idx) in posts"
           :key="idx"

@@ -1,39 +1,36 @@
 <script lang="ts" setup>
   import Swal, { SweetAlertOptions } from 'sweetalert2'
-  import StoreInterface from '~~/interfaces/store.interface'
+  import DetailPostInterface from '~/interfaces/post/detail.interface'
 
   const props = defineProps(['post'])
-  const post = props.post
+  const post: DetailPostInterface = props.post
 
   const emit = defineEmits(['share', 'setShareContent'])
 
   const postId: string = post?.id || ''
-  const payload: StoreInterface = {
-    path: `api/${postId}/like`
-  }
 
   watch(post, () => {
     post._count = post._count
     post.userLikes = post.userLikes
   })
 
-  const onLikeClick = async () => {
-    const resLikePost = await useStoreData(payload).resLikePost()
-    const { error: err, data: resData } = resLikePost
-    const errData: any = err.value?.data || null
-    const data: any = resData.value || null
+  const { postLikes } = postStore()
+  const { status, message, likePost } = storeToRefs(postStore())
 
-    if (data) {
-      post._count = data?.data._count
-      post.userLikes = data?.data.userLikes
+  const onLikeClick = async () => {
+    await postLikes(postId)
+
+    if (status.value) {
+      post._count = likePost.value?._count
+      post.userLikes = likePost.value?.userLikes
     }
 
-    if (errData) {
+    if (!status.value) {
       const data: SweetAlertOptions = {
         title: 'Oopss!!! Sepertinya ada kesalahan. Mohon coba beberapa saat lagi!'
       }
 
-      if (errData?.message == 'Forbidden!') data.title = 'Mohon login untuk memberikan like!'
+      if (message.value == 'Forbidden!') data.title = 'Mohon login untuk memberikan like!'
 
       Swal.fire({
         icon: 'warning',
@@ -41,16 +38,8 @@
         customClass: 'drop-shadow-br !rounded-lgm'
       }).then(info => {
         if (info.isConfirmed || info.dismiss) {
-          if (errData?.message == 'Forbidden!') navigateTo('/login')
+          if (message.value == 'Forbidden!') navigateTo('/login')
         }
-      })
-    }
-
-    if (!data && !errData) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Internal Server Error! Mohon coba beberapa saat lagi!',
-        customClass: 'drop-shadow-br !rounded-lgm'
       })
     }
   }

@@ -1,24 +1,14 @@
 <script lang="ts" setup>
   const route = useRoute()
-  const postId = route.params?.slug.toString()
+  const postId: string = route.params?.slug.toString() || ''
 
-  const { pending: postStatus, data: resPost } = await useGetData().resDetailPost(postId)
-  const post: Ref<any> = ref()
-  watch(resPost, () => {
-    post.value = resPost.value
-  })
+  const { getDetailPost, getComments } = postStore()
+  const { detailPost, listComments, isCommentLoaded } = storeToRefs(postStore())
 
-  const { pending: statusComment, data: resComments } = await useGetData().resComments(postId)
-  const refreshComments = async () => {
-    const { pending, data } = await useGetData().resComments(postId)
-    watch(data, () => {
-      resComments.value = data.value
-    })
-  }
-  const comments: Ref<any> = ref()
-  watch(resComments, () => {
-    comments.value = resComments.value
-  })
+  await getDetailPost(postId)
+  await getComments(postId)
+
+  const refreshComments = async () => await getComments(postId)
 </script>
 <template>
   <section class="container">
@@ -32,44 +22,44 @@
       </div>
 
       <NuxtLink
-        :to="`/user/${post?.data?.user?.username}`"
+        :to="`/user/${detailPost?.user?.username}`"
         class="block w-20 mx-auto mb-3 rounded-full overflow-hidden drop-shadow-br aspect-square"
       >
         <img
-          v-if="post?.data?.user?.profile && post?.data?.user?.profile.photo"
-          :src="post?.data?.user?.profile.photo"
-          :alt="post?.data?.user?.name"
+          v-if="detailPost?.user?.profile && detailPost?.user?.profile.photo"
+          :src="detailPost?.user?.profile.photo"
+          :alt="detailPost?.user?.name"
           class="w-full object-cover aspect-square"
         />
         <img
           v-else
           src="~/assets/images/profile.png"
-          :alt="post?.data?.user?.name"
+          :alt="detailPost?.user?.name"
           class="w-full object-cover aspect-square"
         />
       </NuxtLink>
       <p class="max-w-max mx-auto font-semibold text-lg mb-5">
-        Cerita dari <NuxtLink :to="`/user/${post?.data?.user?.username}`">{{ post?.data?.user?.name }}</NuxtLink>
+        Cerita dari <NuxtLink :to="`/user/${detailPost?.user?.username}`">{{ detailPost?.user?.name }}</NuxtLink>
       </p>
 
       <div class="w-11/12 mx-auto">
         <div class="bg-primary border border-black rounded-lgm p-8 drop-shadow-br mb-3">
-          <p>{{ post?.data?.content }}</p>
+          <p>{{ detailPost?.content }}</p>
         </div>
 
         <div class="pt-12 sticky top-0 bg-white pb-8 z-20 drop-shadow-wt">
           <LazyFormComment
-            :postId="post?.data?.id"
+            :postId="detailPost?.id"
             @refreshComments="refreshComments"
           />
         </div>
 
-        <div v-if="statusComment">
+        <div v-if="!isCommentLoaded">
           <p>Loading...</p>
         </div>
         <div v-else>
           <Comment
-            v-for="(item, idx) in comments?.data"
+            v-for="(item, idx) in listComments"
             :key="idx"
             :item="item"
           />
