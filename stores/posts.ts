@@ -45,7 +45,10 @@ export const postStore = defineStore('posts', {
         this.listPosts = response?.data
       }
 
-      if (error.value) this.errorHandling(error.value)
+      if (error.value) {
+        this.errorHandling(error.value)
+        this.listPosts = []
+      }
     },
     
     async getDetailPost(postId: string) {
