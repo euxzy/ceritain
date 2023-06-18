@@ -1,16 +1,22 @@
 <script lang="ts" setup>
+  import DetailPostInterface from '~/interfaces/post/detail.interface'
+
   const emit = defineEmits(['share'])
   const props = defineProps(['postContent', 'setShareContent'])
   const origin = window.location.origin || 'https://ceritain.otakuline.id'
-  const postContent: any = props.postContent
+  const postContent: DetailPostInterface = props.postContent
 
   interface SharingInterface {
-    url: string
-    title: string
-    quote: string
+    url?: string
+    title?: string
+    quote?: string
     hashtags: string
     description: string
-    networks: Array<any>
+    networks: Array<{
+      name: string
+      icon: string
+      color: string
+    }>
   }
 
   const sharingOptions: Ref<SharingInterface> = ref({

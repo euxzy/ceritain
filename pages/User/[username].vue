@@ -1,33 +1,39 @@
 <script lang="ts" setup>
+  import DetailPostInterface from '~/interfaces/post/detail.interface'
+
   const params = useRoute().params
   const username: string = params?.username.toString() || ''
-  const { pending, data: resUser, error } = await useGetData().resUserProfile(username)
-  const dataUser: Ref<any> = ref()
-  watch(resUser, () => {
-    const data: any = resUser.value
-    dataUser.value = data?.data
-  })
+  const isPostsLoaded: Ref<boolean> = ref(false)
+
+  const { getUserDetail } = userStore()
+  const { userDetail, isDetailLoaded } = storeToRefs(userStore())
+  const { getListPost } = postStore()
+  const { listPosts, status } = storeToRefs(postStore())
+
+  await getUserDetail(username)
 
   const isShare: Ref<boolean> = ref(false)
-  const postContent: Ref<any> = ref()
-  const setShareContent = (post: any) => {
+  const postContent: Ref<DetailPostInterface> = ref({})
+  const setShareContent = (post: DetailPostInterface) => {
     postContent.value = post
   }
 
-  const posts: Ref<Array<any>> = ref([])
+  const posts: Ref<Array<DetailPostInterface>> = ref([])
   const page: Ref<number> = ref(1)
-  const payload: { params: object } = {
-    params: { 
-      page: 1,
-      posts_by: username
-    }
+  const payload: object = {
+    page: 1,
+    posts_by: username
   }
   const isMoreData: Ref<boolean> = ref(true)
 
-  const { pending: isPostPending, data: resPosts, error: errPosts } = await useGetData().resPosts(payload)
-  watch(resPosts, () => {
-    const dataPosts: any = resPosts.value
-    const newPosts: Array<object> = dataPosts?.data || []
+  await getListPost(payload)
+  if (status) {
+    posts.value = listPosts.value
+    isPostsLoaded.value = true
+  }
+
+  watch(listPosts, () => {
+    const newPosts: Array<DetailPostInterface> = listPosts.value || []
     if (newPosts.length < 5 ) isMoreData.value = false
     newPosts.map((item) => {
       posts.value.push(item)
@@ -36,15 +42,15 @@
 
   const loadMore = async () => {
     page.value++
-    const payload: { params: object } = {
-      params: {
-        page: page.value,
-        posts_by: username
-      }
+    const payload: object = {
+      page: page.value,
+      posts_by: username
     }
-    const { pending: morePending, data, error: err } = await useGetData().resPosts(payload)
-    resPosts.value = data.value
+    
+    await getListPost(payload)
   }
+
+  const isShowUpdate: Ref<boolean> = ref(false)
 </script>
 <template>
   <section>
@@ -57,29 +63,38 @@
                 src="~/assets/images/profile.png" 
                 alt="Profile" 
                 class="w-full object-cover aspect-square"
-                v-if="!dataUser?.profile && !dataUser?.profile?.photo">
+                v-if="!userDetail?.profile && !userDetail?.profile?.photo">
               <img 
-                :src="dataUser?.profile?.photo" 
-                :alt="dataUser?.name" 
+                :src="userDetail?.profile?.photo" 
+                :alt="userDetail?.name" 
                 class="w-full object-cover aspect-square"
                 v-else>
             </div>
             <div class="flex-1">
               <div class="md:flex gap-4 items-baseline mb-2">
-                <p class="text-2xl font-bold" v-if="!pending">{{ dataUser?.name }}</p>
+                <p class="text-2xl font-bold" v-if="!isDetailLoaded">{{ userDetail?.name }}</p>
                 <p class="text-xs">1K followers • 1K following</p>
+                <div>
+                  <button
+                    type="button"
+                    class="rounded-lgm text-xs font-bold bg-accent-3 px-2 py-1 border border-black drop-shadow-br hover:-translate-y-1 transition-all duration-300"
+                    @click="isShowUpdate = true"
+                  >
+                    Edit profile
+                  </button>
+                </div>
               </div>
-              <p class="text-sm hidden sm:block" v-if="!pending">{{ dataUser?.profile?.bio }}</p>
+              <p class="text-sm hidden sm:block" v-if="!isDetailLoaded">{{ userDetail?.profile?.bio }}</p>
             </div>
           </div>
           
-          <p class="text-sm sm:hidden" v-if="!pending">{{ dataUser?.profile?.bio }}</p>
+          <p class="text-sm sm:hidden" v-if="!isDetailLoaded">{{ userDetail?.profile?.bio }}</p>
         </div>
 
-        <p class="font-bold text-lg px-4 md:px-8">Postingan dari {{ dataUser?.name }}</p>
+        <p class="font-bold text-lg px-4 md:px-8">Postingan dari {{ userDetail?.name }}</p>
       </div>
 
-      <div class="w-11/12 mx-auto" v-if="!isPostPending">
+      <div class="w-11/12 mx-auto" v-if="isPostsLoaded">
         <PostCard
           v-for="(post, idx) of posts"
           :key="idx"
@@ -115,6 +130,20 @@
         :postContent="postContent"
         :setShareContent="setShareContent"
         @share="isShare = false"
+      />
+    </Transition>
+
+    <Transition
+      enter-active-class="duration-300"
+      enter-from-class="transform opacity-0 translate-y-6"
+      enter-to-class="opacity-100 translate-y-0"
+      leave-active-class="duration-300"
+      leave-from-class="opacity-100 translate-y-0"
+      leave-to-class="transform opacity-0 translate-y-6"
+    >
+      <ModalEditProfile
+        v-if="isShowUpdate"
+        @isUpdate="isShowUpdate = false"
       />
     </Transition>
   </section>

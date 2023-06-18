@@ -1,9 +1,12 @@
 <script lang="ts" setup>
   import Swal from 'sweetalert2'
-  import StoreInterface from '~~/interfaces/store.interface'
 
-  const { pending, data: resData, error } = await useGetData().resProfile()
-  const dataUser: Ref<any> = ref(null)
+  const { getProfile } = userStore()
+  await getProfile()
+
+  const { profile } = storeToRefs(userStore())
+  const { logout } = authStore()
+  const { rmToken } = useAuthToken()
 
   interface NavigationInterface {
     title: string
@@ -13,7 +16,7 @@
 
   const initialNavs: Array<NavigationInterface> = [
     { title: 'home', to: '/', icon: 'ic:round-home' },
-    { title: 'profile', to: `/user/${dataUser.value?.username}`, icon: 'ic:round-account-circle' },
+    { title: 'profile', to: `/user/${profile.value?.username}`, icon: 'ic:round-account-circle' },
     { title: 'login', to: '/login', icon: 'ic:round-log-in' },
     { title: 'logout', to: '', icon: 'ic:round-log-out' },
     { title: 'close', to: '', icon: 'ic:round-close' },
@@ -21,10 +24,8 @@
 
   const navItems: Ref<Array<NavigationInterface>> = ref([])
   watchEffect(() => {
-    const data: any = resData.value
-    dataUser.value = data?.data || null
 
-    if (dataUser.value?.username) {
+    if (profile.value?.username) {
       navItems.value = initialNavs.filter((item) => {
         if (item.title != 'login') return item
       })
@@ -35,7 +36,7 @@
     }
     
     navItems.value.map((item) => {
-      if (item.title == 'profile') item.to = `/user/${dataUser.value?.username}`
+      if (item.title == 'profile') item.to = `/user/${profile.value?.username}`
       return item
     })
   })
@@ -49,10 +50,9 @@
       customClass: 'drop-shadow-br !rounded-lgm'
     }).then(async (res) => {
       if (res.isConfirmed) {
-        const payload: StoreInterface = { path: 'api/auth/logout' }
-        await useStoreData(payload).resLogout()
+        await logout()
+        rmToken()
 
-        localStorage.removeItem('token')
         reloadNuxtApp({
           path: '/',
           force: true,

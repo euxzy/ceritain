@@ -1,18 +1,17 @@
 <script lang="ts" setup>
   import Swal, { SweetAlertOptions } from 'sweetalert2'
-  import StoreInterface from '~~/interfaces/store.interface'
 
-  const props = defineProps(['resProfile'])
   const emit = defineEmits(['refreshNewData'])
-  const resProfile = props.resProfile
-  const dataUser: any = resProfile.data.value || null
+  const { profile, isLogged } = storeToRefs(userStore())
+  const { createPost } = postStore()
+  const { status, message } = storeToRefs(postStore())
 
   const storyLabel: Ref = ref()
   const usernameLabel: Ref = ref()
   const tagsLabel: Ref = ref()
 
   const story: Ref<string> = ref('')
-  const username: Ref<string> = ref(dataUser?.data.username || '')
+  const username: Ref<string> = ref(profile.value?.username || '')
   const tags: Ref<string> = ref('')
 
   watch([story, username, tags], () => {
@@ -33,16 +32,9 @@
     evt.preventDefault()
     const formData = new FormData(formPost.value)
 
-    const payload: StoreInterface = {
-      path: 'api/post/add',
-      formData
-    }
+    await createPost(formData)
 
-    const resStrorePost = await useStoreData(payload).resStorePost()
-    const res: any = resStrorePost.data.value
-    const err: any = resStrorePost.error.value?.data || null
-
-    if (res?.status) {
+    if (status.value) {
       Swal.fire({
         icon: 'success',
         title: 'Ceritamu berhasil diposting!',
@@ -55,27 +47,20 @@
       emit('refreshNewData')
     }
 
-    if (err) {
+    if (!status.value) {
       const data: SweetAlertOptions = {
-        title: 'Mohon login dulu untuk mulai bercerita!'
+        title: 'Internal Server Error! Mohon coba beberapa saat lagi!'
       }
 
-      if (err?.statusCode == 400 && err?.message.includes('content')) data.title = 'Kamu belum menulis cerita apapun!'
-      if (err?.statusCode == 400 && err?.message.includes('tags')) data.title = 'Tag diawali dengan # dan hanya karakter alphanumeric yang diperbolehkan!'
+      if (message.value.includes('Forbidden!')) data.title = 'Mohon login dulu untuk mulai bercerita!'
+      if (message.value.includes('content')) data.title = 'Kamu belum menulis cerita apapun!'
+      if (message.value.includes('tags')) data.title = 'Tag diawali dengan # dan hanya karakter alphanumeric yang diperbolehkan!'
       Swal.fire({
         icon: 'info',
         title: data.title,
         customClass: 'drop-shadow-br !rounded-lgm'
       }).then((info) => {
         if (info.isConfirmed || info.dismiss) navigateTo('/login')
-      })
-    }
-
-    if (!err && !res) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Internal Server Error! Mohon coba beberapa saat lagi!',
-        customClass: 'drop-shadow-br !rounded-lgm'
       })
     }
   }
@@ -118,12 +103,12 @@
             id="username"
             v-model="username"
             class="peer relative w-full bg-secondary border px-6 py-[10px] border-black rounded-lgm outline-none placeholder:text-transparent drop-shadow-br"
-            :disabled="dataUser?.status"
+            :disabled="isLogged"
           />
           <label 
             ref="usernameLabel"
             for="username"
-            :class="dataUser?.data?.username ? '!-translate-y-6 !border-black' : ''"
+            :class="profile?.username ? '!-translate-y-6 !border-black' : ''"
             class="card-border inset-x-0 mt-3 mx-auto w-max bg-secondary peer-hover:-translate-y-6 peer-focus:-translate-y-6 text-sm">Isi nicknamemu</label>
         </div>
         <div class="relative">

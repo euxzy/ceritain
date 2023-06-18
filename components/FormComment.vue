@@ -1,6 +1,5 @@
 <script lang="ts" setup>
   import Swal, { SweetAlertOptions } from 'sweetalert2'
-  import StoreInterface from '~~/interfaces/store.interface'
 
   const props = defineProps(['postId'])
   let postId: string = props?.postId
@@ -11,19 +10,16 @@
   const emit = defineEmits(['refreshComments'])
   const content: Ref<string> = ref('')
 
+  const { createComment } = postStore()
+  const { status, message } = storeToRefs(postStore())
+
   const formComment: Ref<any> = ref()
   const onFormSubmit = async () => {
     const formData = new FormData(formComment.value)
-    const payload: StoreInterface = {
-      path: 'api/comment/add',
-      formData
-    }
 
-    const resComments = await useStoreData(payload).resComment()
-    const res: any = resComments.data.value
-    const err: any = resComments.error.value?.data || null
+    await createComment(formData)
 
-    if (res?.status) {
+    if (status.value) {
       Swal.fire({
         icon: 'success',
         title: 'Komentarmu telah dikirim!',
@@ -35,13 +31,14 @@
       emit('refreshComments')
     }
 
-    if (err) {
+    if (!status.value) {
       const data: SweetAlertOptions = {
-        title: 'Mohon login dulu untuk memberikan komentar!'
+        title: 'Internal Server Error! Mohon coba beberapa saat lagi!'
       }
 
-      if (err?.message.includes('content')) data.title = 'Kamu belum menulis komentar apapun!'
-      if (err?.message.includes('postId')) data.title = 'Sepertinya ada kesalahan, mohon coba beberapa saat lagi!'
+      if (message.value.includes('Forbidden!')) data.title = 'Mohon login dulu untuk memberikan komentar!'
+      if (message.value.includes('content')) data.title = 'Kamu belum menulis komentar apapun!'
+      if (message.value.includes('postId')) data.title = 'Sepertinya ada kesalahan, mohon coba beberapa saat lagi!'
 
       Swal.fire({
         icon: 'info',
@@ -49,16 +46,8 @@
         customClass: 'drop-shadow-br !rounded-lgm'
       }).then((info) => {
         if (info.isConfirmed) {
-          if (err?.statusCode == 403) navigateTo('/login')
+          if (message.value.includes('Forbidden!')) navigateTo('/login')
         }
-      })
-    }
-
-    if (!err && !res) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Internal Server Error! Mohon coba beberapa saat lagi!',
-        customClass: 'drop-shadow-br !rounded-lgm'
       })
     }
   }

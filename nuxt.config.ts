@@ -11,18 +11,38 @@ export default defineNuxtConfig({
       ]
     }
   },
+
   ssr: false,
+
   modules: [
+    '@pinia/nuxt',
     '@nuxtjs/tailwindcss',
-    'nuxt-icon'
+    'nuxt-icon',
   ],
+
   tailwindcss: {
     cssPath: '~/assets/css/tailwind.css',
     configPath: '~/config/tailwind.ts',
     viewer: false
   },
+
+  pinia: {
+    autoImports: [
+      'storeToRefs',
+      'defineStore'
+    ]
+  },
+
   appConfig: {
     baseApi: process.env.APP_API,
     otakuLineApi: process.env.OTAKULINE_API
-  }
+  },
+
+  devtools: {
+    enabled: true
+  },
+
+  imports: {
+    dirs: ['stores']
+  },
 })

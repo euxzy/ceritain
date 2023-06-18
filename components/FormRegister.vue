@@ -1,6 +1,5 @@
 <script lang="ts" setup>
   import Swal, { SweetAlertOptions } from 'sweetalert2'
-  import StoreInterface from '~~/interfaces/store.interface'
 
   const nameLabel: Ref = ref()
   const usernameLabel: Ref = ref()
@@ -27,6 +26,9 @@
     })
   })
 
+  const { register } = authStore()
+  const { status, message } = storeToRefs(authStore())
+
   const isSubmited: Ref<boolean> = ref(false)
   const formRegist: Ref = ref()
   const onRegist = async (evt: any) => {
@@ -34,26 +36,20 @@
     isSubmited.value = true
     const formData: FormData = new FormData(formRegist.value)
 
-    const payload: StoreInterface = {
-      path: 'api/auth/register',
-      formData
-    }
+    await register(formData)
 
-    const resRegister = await useStoreData(payload).resRegister()
-    const res: any = resRegister.data.value
-    const err: any = resRegister.error.value?.data || null
-
-    if (err) {
+    if (!status.value) {
       const data: SweetAlertOptions = {
-        title: 'Oopss! mohon isi semua data dengan benar!',
+        title: 'Internal Server Error! Mohon coba beberapa saat lagi!',
         icon: 'error'
       }
 
-      if (err?.statusCode == 400 && err?.message.includes('"name" length')) data.title = 'Oopss! nama minimal harus terdiri dari 3 karakter!'
-      else if (err?.statusCode == 400 && err?.message.includes('"username" length')) data.title = 'Oopss! usernamemu terlalu pendek!'
-      else if (err?.statusCode == 400 && err?.message.includes('email')) data.title = 'Oopss! emailmu tidak valid!'
-      else if (err?.statusCode == 400 && err?.message.includes('password')) data.title = 'Oopss! passwordmu terlalu pendek!'
-      else if (err?.statusCode == 409) data.title = 'Oopss! username atau email sudah terdaftar!'
+      if (message.value.includes('empty')) data.title = 'Oopss! mohon isi semua data dengan benar!'
+      else if (message.value.includes('"name" length')) data.title = 'Oopss! nama minimal harus terdiri dari 3 karakter!'
+      else if (message.value.includes('"username" length')) data.title = 'Oopss! usernamemu terlalu pendek!'
+      else if (message.value.includes('valid email')) data.title = 'Oopss! emailmu tidak valid!'
+      else if (message.value.includes('password length')) data.title = 'Oopss! passwordmu terlalu pendek!'
+      else if (message.value.includes('already used!')) data.title = 'Oopss! username atau email sudah terdaftar!'
 
       Swal.fire({
         title: data.title,
@@ -62,21 +58,13 @@
       })
     }
 
-    if (res?.status) {
+    if (status.value) {
       Swal.fire({
         title: 'Registrasi berhasil! mohon segera verifikasi emailmu!',
         icon: 'success',
         customClass: 'drop-shadow-br !rounded-lgm'
       }).then((info) => {
         if (info.isConfirmed || info.dismiss) navigateTo('/login')
-      })
-    }
-
-    if (!err && !res) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Internal Server Error! Mohon coba beberapa saat lagi!',
-        customClass: 'drop-shadow-br !rounded-lgm'
       })
     }
 
