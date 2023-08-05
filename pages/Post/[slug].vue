@@ -4,6 +4,7 @@
 
   const { getDetailPost, getComments } = postStore()
   const { detailPost, listComments, isCommentLoaded } = storeToRefs(postStore())
+  listComments.value = []
 
   await getDetailPost(postId)
   await getComments(postId)
