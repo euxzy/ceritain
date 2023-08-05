@@ -57,7 +57,7 @@
 
       <p class="relative text-xs mb-4 max-w-max">Dari <NuxtLink :to="`/user/${post?.user?.username}`" class="text-lg font-medium">{{ post?.user?.name }}</NuxtLink></p>
 
-      <p class="mb-1">{{ post?.content }}</p>
+      <p class="mb-1 break-words">{{ post?.content }}</p>
 
       <div class="absolute w-max flex gap-[10px] justify-end right-6 bottom-4">
         <button
