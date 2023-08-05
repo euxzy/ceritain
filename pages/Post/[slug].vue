@@ -44,7 +44,7 @@
 
       <div class="w-11/12 mx-auto">
         <div class="bg-primary border border-black rounded-lgm p-8 drop-shadow-br mb-3">
-          <p>{{ detailPost?.content }}</p>
+          <p class="break-words">{{ detailPost?.content }}</p>
         </div>
 
         <div class="pt-12 sticky top-0 bg-white pb-8 z-20 drop-shadow-wt">
