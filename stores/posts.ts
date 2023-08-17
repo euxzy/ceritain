@@ -1,7 +1,5 @@
 import PostResponseInterface from '~/interfaces/response/post.interface'
-
-const { baseApi, otakuLineApi } = useAppConfig()
-const { getToken } = useAuthToken()
+import { RequestMethod } from '~/types'
 
 export const postStore = defineStore('posts', {
   state: (): PostResponseInterface => ({
@@ -27,15 +25,19 @@ export const postStore = defineStore('posts', {
       this.message = response?.message
     },
 
-    async getListPost(params: object) {
-      const { data, error} = await useFetch('api/post', {
-        baseURL: baseApi,
-        method: 'GET',
-        params,
-        headers: {
-          'Authorization': getToken()
-        }
-      })
+    async getListPost(params: {
+      page?: number,
+      order_by?: string,
+      data?: number,
+      posts_by?: string,
+    }) {
+      let endpoint = 'api/post?'
+      if (params?.page) endpoint += `&page=${params.page}`
+      if (params?.order_by) endpoint += `&order_by=${params.order_by}`
+      if (params?.data) endpoint += `&data=${params.data}`
+      if (params?.posts_by) endpoint += `&posts_by=${params.posts_by}`
+
+      const { data, error} = await httpClient(endpoint, RequestMethod.GET)
 
       if (data.value) {
         const response: any = data.value
@@ -52,7 +54,7 @@ export const postStore = defineStore('posts', {
     },
     
     async getDetailPost(postId: string) {
-      const { data, error } = await useFetch(`api/post/${postId}`, { baseURL: baseApi })
+      const { data, error } = await httpClient(`api/post/${postId}`, RequestMethod.GET)
 
       if (data.value) {
         const response: any = data.value
@@ -66,7 +68,7 @@ export const postStore = defineStore('posts', {
     },
     
     async getComments(postId: string) {
-      const { data, error } = await useFetch(`api/${postId}/comment`, { baseURL: baseApi })
+      const { data, error } = await httpClient(`api/${postId}/comment`, RequestMethod.GET)
 
       if (data.value) {
         const response: any = data.value
@@ -82,14 +84,7 @@ export const postStore = defineStore('posts', {
     },
     
     async createPost(body: FormData) {
-      const { data, error } = await useFetch('api/post/add', {
-        baseURL: baseApi,
-        method: 'POST',
-        body,
-        headers: {
-          'Authorization': getToken()
-        }
-      })
+      const { data, error } = await httpClient('api/post/add', RequestMethod.POST, body)
 
       if (data.value) {
         const response: any = data.value
@@ -103,14 +98,7 @@ export const postStore = defineStore('posts', {
     },
     
     async createComment(body: FormData) {
-      const { data, error } = await useFetch('api/comment/add', {
-        baseURL: baseApi,
-        method: 'POST',
-        body,
-        headers: {
-          'Authorization': getToken()
-        }
-      })
+      const { data, error } = await httpClient('api/comment/add', RequestMethod.POST, body)
 
       if (data.value) {
         const response: any = data.value
@@ -124,13 +112,7 @@ export const postStore = defineStore('posts', {
     },
     
     async postLikes(postId: string) {
-      const { data, error } = await useFetch(`api/${postId}/like`, {
-        baseURL: baseApi,
-        method: 'POST',
-        headers: {
-          'Authorization': getToken()
-        }
-      })
+      const { data, error } = await httpClient(`api/${postId}/like`, RequestMethod.POST)
 
       if (data.value) {
         const response: any = data.value
@@ -144,6 +126,8 @@ export const postStore = defineStore('posts', {
     },
     
     async getOtakulinePosts() {
+      const { otakuLineApi } = useAppConfig()
+
       const { data, error } = await useFetch('wp-json/wp/v2/posts', {
         baseURL: otakuLineApi,
         params: {
