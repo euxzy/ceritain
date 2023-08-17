@@ -6,6 +6,7 @@ useServerSeoMeta({
   ogTitle: seoContent.title,
   description: seoContent.description,
   ogDescription: seoContent.description,
+  ogImage: seoContent.image,
 })
 
 useHead({
