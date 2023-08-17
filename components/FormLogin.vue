@@ -125,6 +125,7 @@
             class="relative w-full border px-6 py-[10px] bg-accent-9 font-semibold border-black rounded-lgm hover:bg-secondary transition-all duration-300 drop-shadow-br"
             v-on:click="onLogin"
             :disabled="isSubmited"
+            aria-label="Login"
           >login!</button>
         </div>
       </div>

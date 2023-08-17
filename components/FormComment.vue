@@ -68,6 +68,7 @@
         type="button"
         class="text-center max-w-max bg-accent-10 rounded-lg py-2.5 font-bold drop-shadow-br px-4 text-xs transition-all duration-300 hover:-translate-y-1"
         v-on:click="onFormSubmit"
+        aria-label="Submit Comment"
       >
         Beri Komentar!
       </button>

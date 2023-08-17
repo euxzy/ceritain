@@ -84,6 +84,7 @@
         type="button"
         class="text-3xl sm:text-4xl bg-accent-3 py-1.5 sm:py-2 px-2.5 rounded-lgm border border-black drop-shadow-br absolute bottom-0 right-0"
         @click="onMenuClick('open')"
+        aria-label="Navigation"
       >
         <Icon name="ic:round-menu" />
       </button>
@@ -104,6 +105,7 @@
           :to="navItem.to"
           class="text-3xl sm:text-4xl bg-accent-3 py-1.5 sm:py-2 px-2.5 rounded-lgm border border-black drop-shadow-br cursor-pointer"
           @click="onMenuClick(navItem.title)"
+          :aria-label="`To ${navItem.title}`"
         >
           <Icon :name="navItem.icon" />
         </NuxtLink>

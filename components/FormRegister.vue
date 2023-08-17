@@ -134,6 +134,7 @@
             class="relative w-full border px-6 py-[10px] bg-accent-4 font-semibold border-black rounded-lgm hover:bg-secondary transition-all duration-300 drop-shadow-br"
             v-on:click="onRegist"
             :disabled="isSubmited"
+            aria-label="Register Now"
           >Daftar Sekarang!</button>
         </div>
       </div>

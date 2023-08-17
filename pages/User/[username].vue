@@ -30,6 +30,8 @@
   if (status) {
     posts.value = listPosts.value
     isPostsLoaded.value = true
+
+    if (listPosts.value.length < 5) isMoreData.value = false
   }
 
   watch(listPosts, () => {
@@ -59,22 +61,34 @@
         <div class="bg-white w-11/12 mx-auto p-4 border border-black drop-shadow-br rounded-lgm mb-6">
           <div class="flex gap-4 sm:gap-8 items-center mb-4 sm:mb-0">
             <div class="rounded-full border border-black drop-shadow-br w-20 h-20 sm:w-24 sm:h-24 aspect-square overflow-hidden bg-white">
-              <img 
-                src="~/assets/images/profile.png" 
+              <NuxtImg 
+                v-if="!userDetail?.profile && !userDetail?.profile?.photo"
+                src="images/profile.png" 
                 alt="Profile" 
                 class="w-full object-cover aspect-square"
-                v-if="!userDetail?.profile && !userDetail?.profile?.photo">
-              <img 
+                width="96"
+                height="96"
+                format="webp"
+                loading="lazy"
+                densities="x1 x2"
+              />
+              <NuxtImg 
+                v-else
                 :src="userDetail?.profile?.photo" 
                 :alt="userDetail?.name" 
                 class="w-full object-cover aspect-square"
-                v-else>
+                width="96"
+                height="96"
+                format="webp"
+                loading="lazy"
+                densities="x1 x2"
+              />
             </div>
             <div class="flex-1">
               <div class="md:flex gap-4 items-baseline mb-2">
                 <p class="text-2xl font-bold" v-if="!isDetailLoaded">{{ userDetail?.name }}</p>
                 <p class="text-xs">1K followers • 1K following</p>
-                <div>
+                <!-- <div>
                   <button
                     type="button"
                     class="rounded-lgm text-xs font-bold bg-accent-3 px-2 py-1 border border-black drop-shadow-br hover:-translate-y-1 transition-all duration-300"
@@ -82,7 +96,7 @@
                   >
                     Edit profile
                   </button>
-                </div>
+                </div> -->
               </div>
               <p class="text-sm hidden sm:block" v-if="!isDetailLoaded">{{ userDetail?.profile?.bio }}</p>
             </div>
@@ -105,17 +119,18 @@
       </div>
 
       <button
+        v-if="isMoreData"
         type="button"
         class="border bg-white my-16 font-medium block border-black rounded-lgm px-8 py-1 mx-auto drop-shadow-br transition-all duration-300 hover:-translate-y-1"
-        v-on:click="loadMore"
-        v-if="isMoreData"
+        @click="loadMore"
+        aria-label="Load More"
       >
         Load more
       </button>
     </section>
 
     <Otakuline />
-    <Footer />
+    <TheFooter />
 
     <Transition
       enter-active-class="duration-300"

@@ -33,7 +33,16 @@
   <section class="container h-screen flex justify-center items-center">
     <div class="mb-8">
       <div class="w-96 mx-auto mb-2">
-        <img class="w-full" src="~/assets/images/cats.png" alt="Ceritain">
+        <NuxtImg
+          class="w-full"
+          src="images/cats.png"
+          alt="Ceritain"
+          width="384"
+          height="auto"
+          format="webp"
+          loading="lazy"
+          densities="x1 x2"
+        />
       </div>
       <div class="mx-auto max-w-max text-center text-lg font-medium">
         <p>Mohon tunggu hingga verifikasi berhasil!</p>

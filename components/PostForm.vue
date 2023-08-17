@@ -116,6 +116,7 @@
             type="submit"
             class="relative w-full border px-6 py-[10px] bg-accent-2 font-semibold border-black rounded-lgm hover:bg-secondary transition-all duration-300 drop-shadow-br"
             v-on:click="onFormSubmit"
+            aria-label="Submit Story"
           >Bagikan Ceritamu!</button>
         </div>
       </div>
