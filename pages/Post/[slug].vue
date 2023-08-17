@@ -15,7 +15,16 @@
   <section class="container">
     <div class="pt-8 md:pt-16 pb-5">
       <div class="w-72 mx-auto mb-2">
-        <img class="w-full" src="~/assets/images/cats.png" alt="Ceritain">
+        <NuxtImg
+          src="images/cats.png"
+          class="w-full"
+          alt="Ceritain"
+          width="288"
+          height="auto"
+          format="webp"
+          loading="lazy"
+          densities="x1 x2"
+        />
       </div>
       <div class="max-w-max mx-auto text-center font-medium text-lg leading-tight mb-14">
         <p>Ceritain</p>
@@ -25,22 +34,33 @@
       <NuxtLink
         :to="`/user/${detailPost?.user?.username}`"
         class="block w-20 mx-auto mb-3 rounded-full overflow-hidden drop-shadow-br aspect-square"
+        :aria-label="`To profile ${detailPost?.user?.name}`"
       >
-        <img
+        <NuxtImg
           v-if="detailPost?.user?.profile && detailPost?.user?.profile.photo"
           :src="detailPost?.user?.profile.photo"
           :alt="detailPost?.user?.name"
           class="w-full object-cover aspect-square"
+          width="80"
+          height="80"
+          format="webp"
+          loading="lazy"
+          densities="x1 x2"
         />
-        <img
+        <NuxtImg
           v-else
-          src="~/assets/images/profile.png"
+          src="images/profile.png"
           :alt="detailPost?.user?.name"
           class="w-full object-cover aspect-square"
+          width="80"
+          height="80"
+          format="webp"
+          loading="lazy"
+          densities="x1 x2"
         />
       </NuxtLink>
       <p class="max-w-max mx-auto font-semibold text-lg mb-5">
-        Cerita dari <NuxtLink :to="`/user/${detailPost?.user?.username}`">{{ detailPost?.user?.name }}</NuxtLink>
+        Cerita dari <NuxtLink :to="`/user/${detailPost?.user?.username}`" :aria-label="`to profile ${detailPost?.user?.name}`">{{ detailPost?.user?.name }}</NuxtLink>
       </p>
 
       <div class="w-11/12 mx-auto">
@@ -69,6 +89,6 @@
     </div>
 
     <Otakuline />
-    <Footer />
+    <TheFooter />
   </section>
 </template>

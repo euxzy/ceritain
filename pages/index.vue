@@ -104,6 +104,7 @@
         class="border bg-white my-16 font-medium block border-black rounded-lgm px-8 py-1 mx-auto drop-shadow-br transition-all duration-300 hover:-translate-y-1"
         v-on:click="loadMore"
         v-if="isMoreData"
+        aria-label="Load More"
       >
         Load more
       </button>
@@ -111,7 +112,7 @@
 
     <Otakuline />
 
-    <Footer />
+    <TheFooter />
 
     <Transition
       enter-active-class="duration-300"

@@ -3,21 +3,25 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'Ceritain | Otakuline.id',
+      charset: 'utf-8',
+      viewport: 'width=device-width, initial-scale=1',
+      htmlAttrs: {
+        lang: 'id',
+      },
       link: [
         { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
         { rel: 'icon', sizes: '32x32', href: '/favicon-32x32.png' },
         { rel: 'icon', sizes: '16x16x', href: '/favicon-16x16.png' },
         { rel: 'manifest', href: '/site.webmanifest' },
-      ]
+      ],
     }
   },
-
-  // ssr: false,
 
   modules: [
     '@pinia/nuxt',
     '@nuxtjs/tailwindcss',
     'nuxt-icon',
+    '@nuxt/image',
   ],
 
   tailwindcss: {
@@ -45,4 +49,11 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['stores']
   },
+
+  image: {
+    domains: ['drive.otakuline.id'],
+    alias: {
+      otakuline: 'https://drive.otakuline.id',
+    },
+  }
 })
