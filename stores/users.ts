@@ -1,7 +1,5 @@
 import { UserResponseInterface } from '~/interfaces/response/user.interface'
-
-const { baseApi } = useAppConfig()
-const { getToken } = useAuthToken()
+import { RequestMethod } from '~/types'
 
 export const userStore = defineStore('users', {
   state: (): UserResponseInterface => ({
@@ -25,12 +23,7 @@ export const userStore = defineStore('users', {
     },
 
     async getProfile() {
-      const { data, error } = await useFetch('api/me', {
-        baseURL: baseApi,
-        headers: {
-          'Authorization': getToken()
-        }
-      })
+      const { data, error } = await httpClient('api/me', RequestMethod.GET)
 
       if (data.value) {
         const response: any = data.value
@@ -45,13 +38,7 @@ export const userStore = defineStore('users', {
     },
 
     async getUserDetail(username: string) {
-      const { data, error } = await useFetch(`api/user/${username}`, {
-        baseURL: baseApi,
-        method: 'GET',
-        headers: {
-          'Authorization': getToken()
-        }
-      })
+      const { data, error } = await httpClient(`api/user/${username}`, RequestMethod.GET)
 
       if (data.value) {
         const response: any = data.value

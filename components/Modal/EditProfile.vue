@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+  import Croppie from 'croppie'
+
   const nameLabel: Ref<any> = ref(null)
   const bioLabel: Ref<any> = ref(null)
 
@@ -22,6 +24,18 @@
 
   const dragover = (evt: any) => {
     evt.preventDefault()
+  }
+
+  // const aaa = document.createElement('div')
+  const profileImg: Ref<HTMLElement> = ref(document.createElement('input'))
+  const drop = (evt: any) => {
+    evt.preventDefault()
+    // console.log(evt['dataTransfer']['files'])
+    // console.log(profileImg.value)
+    // const test = new Croppie(profileImg.value, {
+    //   // enableExif
+    // })
+    // console.log(test)
   }
 </script>
 <template>
@@ -61,10 +75,11 @@
             </div>
             <div
               @dragover="dragover"
+              @drop="drop"
             >
-              <input type="file" name="originalFile" id="originalFile" class="hidden">
+              <input ref="profileImg" type="file" name="photo" id="photo" class="hidden" accept="image/*">
               <label
-                for="originalFile"
+                for="photo"
                 class="block w-full p-4 bg-secondary border border-black drop-shadow-br rounded-lgm"
               >
                 <div class="w-full">
