@@ -7,26 +7,28 @@
   const codeParams: string = route.params?.code.toString()
 
   await verify(codeParams)
-  
-  if (status.value) {
-    Swal.fire({
-      icon: 'success',
-      title: 'Verifikasi emailmu berhasil! segera login untuk mulai bercerita.',
-      customClass: 'drop-shadow-br !rounded-lgm'
-    }).then((info) => {
-      if (info.isConfirmed || info.dismiss) navigateTo('/login')
-    })
-  }
 
-  if (!status.value) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Oopss! verifikasi emailmu gagal!',
-      customClass: 'drop-shadow-br !rounded-lgm'
-    }).then((info) => {
-      if (info.isConfirmed || info.dismiss) navigateTo('/')
-    })
-  }
+  onMounted(() => {
+    if (status.value) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Verifikasi emailmu berhasil! segera login untuk mulai bercerita.',
+        customClass: 'drop-shadow-br !rounded-lgm'
+      }).then((info) => {
+        if (info.isConfirmed || info.dismiss) navigateTo('/login')
+      })
+    }
+  
+    if (!status.value) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oopss! verifikasi emailmu gagal!',
+        customClass: 'drop-shadow-br !rounded-lgm'
+      }).then((info) => {
+        if (info.isConfirmed || info.dismiss) navigateTo('/')
+      })
+    }
+  })
 </script>
 
 <template>
